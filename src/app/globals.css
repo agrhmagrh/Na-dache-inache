@@ -3,31 +3,66 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --font-light-rgb: 0, 0, 0;
+  --font-dark-rgb: 255, 255, 255;
+  --background--main: 249, 249, 249;
+  --background-block-light: 255, 255, 255;
+  --background-block-dark: 59, 66, 79;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.banner-title::before {
+  content: "С";
+  position: absolute;
+  font-size: 64px;
+  top: 0;
+  left: -20px;
+
+  color: rgba(255, 255, 255, 20%);
+}
+.banner-description::before {
+  content: "";
+  width: 41px;
+  height: 2px;
+  background-color: #9e9494;
+  display: block;
+  position: absolute;
+  left: -15px;
+  top: 8px;
+}
+.background-form {
+  position: absolute;
+  display: block;
+  background-color: #353a43;
+  width: 560px;
+  height: 750px;
+  top: -100px;
+  left: -60px;
+  z-index: 1;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.form-border:before {
+  content: "";
+  display: block;
+  border: #9e9494 2px solid;
+  width: 500px;
+  height: 610px;
+  position: absolute;
+  z-index: 10;
+  border-left: none;
+  top: -20px;
+  left: -60px;
+}
+
+.title-border {
+  position: absolute;
+  width: 120px;
+  height: 70px;
+  z-index: 1;
+  border: 2px solid #9e9494;
 }

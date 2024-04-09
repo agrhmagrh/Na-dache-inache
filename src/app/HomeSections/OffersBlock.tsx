@@ -1,0 +1,97 @@
+"use client";
+
+import { IOffersCard, ICardsWrapper } from "@/interfaces/ICard";
+import Card from "../components/Card";
+import { useEffect, useRef, useState } from "react";
+import { solutions } from "../contstants/const";
+const [b, n, p, h] = solutions
+
+const cardsData: IOffersCard[] = [
+  {
+    title: "БЕСЕДКИ РАЗЛИЧНЫХ ФОРМ И КОНФИГУРАЦИЙ",
+    link: b.href,
+    columns: 2,
+    src: "/img/Build-1.png",
+  },
+  {
+    title: "НАВЕСЫ ДЛЯ АВТО",
+    link: n.href,
+    columns: 1,
+    src: "/img/Build-2.png",
+  },
+  {
+    title: "ПЕРГОЛЫ",
+    link: p.href,
+    columns: 1,
+    src: "/img/Build-3.png",
+  },
+  {
+    title: "помещения хозяйственного назначения",
+    link: h.href,
+    columns: 2,
+    src: "/img/Build-4.png",
+  },
+];
+
+function CardsWrapper({ widthParent }: ICardsWrapper) {
+  const [cards] = useState<IOffersCard[]>(() => cardsData);
+
+  return (
+    <div className="offers-cards grid grid-cols-3 gap-5 px-10 py-5">
+      {cards.map(({ title, link, src, columns }: IOffersCard, i) => {
+        return (
+          <Card
+            key={i}
+            title={title}
+            link={link}
+            src={src}
+            columns={columns}
+            widthParent={widthParent}
+          ></Card>
+        );
+      })}
+    </div>
+  );
+}
+
+export default function OffersBlock({title}: any) {
+  const content = useRef<HTMLDivElement>(null);
+  const [widthBlock, setWidthBlock] = useState<number>(0);
+
+  useEffect(() => {
+    setWidthBlock(content.current?.offsetWidth as number);
+  }, []);
+
+  return (
+    <section className="offers-block bg-gray-light relative pb-20">
+      <div
+        ref={content}
+        className="content-offers max-w-screen-xl m-auto z-10 relative"
+      >
+        <div className="title flex items-center justify-center p-20 ">
+          <h3 className="relative font-bold text-4xl leading-9 z-10 h-[40px] bg-gray-light">
+            {title || "Мы строим"}
+          </h3>
+          <div className="title-border"></div>
+        </div>
+        <div className="offers-cards-wrapper bg-white">
+          <CardsWrapper widthParent={widthBlock}></CardsWrapper>
+        </div>
+        <div className="offers-cards-info bg-gray-dark text-white text-xl p-12 pt-8">
+          <p>
+            Наша компания специализируемся на строительстве современных
+            конструкций из дерева, таких как беседки, навесы, перголы и т.д. Мы
+            знаем, что такое индивидуальный подход к клиенту! Мы используем
+            только высококачественные материалы и технологии, чем и обеспечиваем
+            долговечность изготовленных конструкций. Наша команда профессионалов
+            готова помочь вам в каждом шаге на пути к созданию своей собственной
+            беседки или навеса и обеспечить высокое качество услуг. Наша цель –
+            сделать процесс строительства максимально простым и комфортным, что
+            позволит наслаждаться новой постройкой в течение долгого времени!
+          </p>
+        </div>
+      </div>
+      <div className="middle-block absolute m-auto w-full h-[40%] z-0 top-1/3 bg-gray-dark-block"></div>
+    </section>
+  );
+}
