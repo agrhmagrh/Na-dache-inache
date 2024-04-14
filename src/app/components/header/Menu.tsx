@@ -1,28 +1,32 @@
-"use client"
-import { Fragment } from "react";
+"use client";
+import { Fragment, useState } from "react";
 import Link from "next/link";
-import { BiChevronDown } from "react-icons/bi";
+import { BiChevronDown, BiMenu } from "react-icons/bi";
 import { Popover, Transition } from "@headlessui/react";
-import { solutions, callsToAction}  from "@/app/contstants/const"
-import { usePathname } from 'next/navigation';
+import { solutions, callsToAction } from "@/app/contstants/const";
+import { usePathname } from "next/navigation";
+import { TypeMobileProps } from "@/types";
 
 
-export default function Menu() {
+
+export default function Menu({ type }: TypeMobileProps) {
   const pathname = usePathname();
-  console.log(pathname);
-  
+  const [isOpen, setIsOpen] = useState(false)
 
-  return (
+  function toggleMenu() {
+    setIsOpen(prev => !prev)
+    
+  }
+
+  return type == "desktop" ? (
     <nav
-      className="menu p-6 col-span-4  mx-auto flex max-w-7xl items-center justify-between lg:px-8"
+      className="menu p-6 col-span-4 mx-auto flex max-w-7xl items-center justify-between lg:px-8 xl:text-md md:text-sm"
       aria-label="Global"
     >
-      <ul className="menu-list flex items-center justify-around gap-16 cursor-pointer ">
+      <ul className="menu-list flex items-center justify-around gap-10 cursor-pointer text-nowrap">
         <Popover className="relative">
           <Popover.Button className="outline-none">
-            <li
-              className="menu-list-item flex items-center gap-1"
-            >
+            <li className="menu-list-item flex items-center gap-1">
               Каталог <BiChevronDown className="text-2xl" />
             </li>
           </Popover.Button>
@@ -41,13 +45,14 @@ export default function Menu() {
                   {solutions.map((item) => (
                     <div
                       key={item.name}
-                      className={pathname === item.href ? "bg-orange text-white group relative flex  p-4" : "group relative flex  p-4 hover:bg-orange hover:text-white"}
+                      className={
+                        pathname === item.href
+                          ? "bg-orange text-white group relative flex  p-4"
+                          : "group relative flex  p-4 hover:bg-orange hover:text-white"
+                      }
                     >
                       <div>
-                        <Link
-                          href={item.href}
-                          className={"font-semibold"  }
-                        >
+                        <Link href={item.href} className={"font-semibold"}>
                           {item.name}
                           <span className="absolute inset-0" />
                         </Link>
@@ -82,6 +87,12 @@ export default function Menu() {
           <Link href="/contacts">Контакты</Link>
         </li>
       </ul>
+    </nav>
+  ) : (
+    <nav className="h-full flex items-center justify-center">
+      <button onClick={toggleMenu} className="md:text-[60px] text-[40px] text-[#C4C4C4] px-5 md:px-10">
+        <BiMenu />
+      </button>
     </nav>
   );
 }

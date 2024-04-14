@@ -2,12 +2,13 @@
 import Link from "next/link";
 import {linkWhatsapp, linkPhone}  from "@/app/contstants/const"
 import { FaWhatsapp } from "react-icons/fa6";
+import { TypeDesktopProps, TypeMobileProps } from "@/types";
 
 
 
 
-export default function Contact() {
-
+export default function Contact({type, isMain}: TypeMobileProps | TypeDesktopProps) {
+    
     function isMobile() {
         try {
             if(navigator) {
@@ -18,21 +19,15 @@ export default function Contact() {
 
         return false
    }
-
-function modal() {
-    console.log("s")
-}
-
-
     return (
-        <div className="flex justify-center gap-3 col-span-2">
+        <div className={`flex ${type == "desktop" ? "justify-center" : "justify-end px-10 col-span-6"} gap-3 ${isMain ? "col-span-2" : "col-span-6"}`}>
             {
                 // isMobile() ? 
-                <Link href={linkWhatsapp}><span className="border p-1 flex items-center text-2xl" ><FaWhatsapp /></span></Link> 
+                <Link href={linkWhatsapp}><span className="border p-1 flex items-center text-2xl md:text-md" ><FaWhatsapp /></span></Link> 
                 // :
                 // <span onClick={modal} className="border p-1 flex items-center text-2xl cursor-pointer" ><FaWhatsapp /></span>
             } 
-            <span className="border p-1 black"><a href={linkPhone}>+7 (985) 630-93-36</a></span>
+            <span className="border p-1 black md:text-sm text-nowrap"><a href={linkPhone}>+7 (985) 630-93-36</a></span>
         </div>
     )
 }

@@ -10,7 +10,7 @@ import FormBlock from "./HomeSections/FormBlock";
 export default function Home() {
   return (
     <>
-      <Header />
+      <Header isMain={true}/>
       <main className="main bg-gray-light">
         <Banner></Banner>
         <OffersBlock></OffersBlock>
