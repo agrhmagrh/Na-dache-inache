@@ -104,7 +104,7 @@ export default function ExamplesBlock() {
     <section className="examples-block-wrapper bg-gray-dark-block">
       <div className="columns-wrapper max-w-screen-xl m-auto py-28 flex gap-10 justify-between">
         <div className="column-left flex flex-col gap-32">
-          <div className="examples-block-title text-white font-bold  text-5xl relative ">
+          <div className="examples-block-title text-white font-bold text-5xl relative">
             <h4 className="bg-gray-dark-block block mt-4 py-2 relative z-10">
               Примеры работ
             </h4>
