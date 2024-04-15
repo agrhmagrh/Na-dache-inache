@@ -14,7 +14,6 @@ export default function Header({isMain}: TypeDesktopProps | TypeMobileProps) {
 
     } else {
       setShowMobileMenu(true)
-
     }
   }, [])
 
