@@ -4,6 +4,7 @@ import Image from "next/image";
 import { createPortal } from "react-dom";
 import Modal from "../components/Modal";
 import { useState } from "react";
+import FormBlock from "../HomeSections/FormBlock";
 
 export default function Pavilions() {
   let [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,7 @@ export default function Pavilions() {
   const pavilions = [
     { url: "/img/pavilions/1.jpg" },
     { url: "/img/pavilions/2.jpg" },
-    { url: "/img/pavilions/3.jpg" },
+    { url: "/img/pavilions/10.jpg" },
     { url: "/img/pavilions/4.jpg" },
     { url: "/img/pavilions/5.jpg" },
     { url: "/img/pavilions/6.jpg" },
@@ -29,7 +30,7 @@ export default function Pavilions() {
   }
   return (
     <main>
-      <section className="bg-gray-dark h-[700px]">
+      <section className="bg-gray-dark h-[700px] bg-[url(/img/pavi-banner.jpg)] bg-top bg-no-repeat bg-cover">
         <div className="max-w-screen-xl m-auto flex items-center justify-end h-full">
           <div className="w-[500px] h-[350px] bg-white p-5  flex flex-col">
             <h1 className="text-4xl p-5 pb-2">
@@ -62,7 +63,7 @@ export default function Pavilions() {
             </h3>
             <div className="title-border"></div>
           </div>
-          <div className="offers-cards-wrapper bg-white grid grid-cols-3 gap-2">
+          <div className="offers-cards-wrapper bg-white grid grid-cols-3 gap-2 p-10 px-40 justify-center">
             {pavilions.map((bg, i) => {
               return (
                 <div key={i} className="col-span-1">
@@ -96,6 +97,7 @@ export default function Pavilions() {
         </div>
         <div className="middle-block absolute m-auto w-full h-[40%] z-0 top-1/3 bg-gray-dark-block"></div>
       </section>
+      <FormBlock></FormBlock>
     </main>
   );
 }
