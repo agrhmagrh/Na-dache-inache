@@ -13,15 +13,12 @@ export default function Pavilions() {
   let [isOpen, setIsOpen] = useState(false);
 
   const pavilions = [
-    { url: "/img/pavilions/1.jpg" },
-    { url: "/img/pavilions/2.jpg" },
-    { url: "/img/pavilions/10.jpg" },
-    { url: "/img/pavilions/4.jpg" },
-    { url: "/img/pavilions/5.jpg" },
-    { url: "/img/pavilions/6.jpg" },
-    { url: "/img/pavilions/7.jpg" },
-    { url: "/img/pavilions/8.jpg" },
-    { url: "/img/pavilions/9.jpg" },
+    { url: "/img/navesa-1.jpg" },
+    { url: "/img/navesa-2.jpg" },
+    { url: "/img/navesa-3.jpg" },
+    { url: "/img/navesa-4.jpg" },
+    { url: "/img/navesa-5.jpg" },
+    { url: "/img/navesa-6.jpg" },
   ];
 
   function closeModal() {
@@ -33,14 +30,14 @@ export default function Pavilions() {
   }
   return (
     <main>
-      <section className="bg-gray-dark h-[700px] bg-[url(/img/pavi-banner.jpg)] bg-top bg-no-repeat bg-cover">
+      <section className="bg-gray-dark h-[700px] bg-[url(/img/navesa-6.jpg)] bg-top bg-no-repeat bg-cover">
         <div className="max-w-screen-xl m-auto flex items-center justify-end h-full">
           <div className="w-[500px] h-[350px] bg-white p-5  flex flex-col">
             <h1 className="text-4xl p-5 pb-2">
-              Индивидуальные беседки для дачи
+              Индивидуальные навесы для дачи
             </h1>
             <span className="text-2xl p-5 pt-2 pb-10">
-              Воплощение вашего идеального уголка отдыха
+              Создание защищенного пространства под ключ
             </span>
             <div className="submit text-center text-white bg-orange m-3 text-2xl h-14  px-8">
               <input
@@ -77,13 +74,12 @@ export default function Pavilions() {
           </div>
           <div className="offers-cards-info bg-gray-dark text-white text-xl p-12 pt-8">
             <h3 className="py-3 text-2xl text-orange">
-              Преимущества выбора индивидуальных беседок
+              Преимущества выбора индивидуальных навесов
             </h3>
             <p className="text-lg text-gray-additional">
-              Приобретение индивидуальной беседки для вашей дачи - это не только
-              способ создать уютное пространство для отдыха, но и инвестиция в
-              комфорт и удовлетворение вашего вкуса. Вот несколько преимуществ,
-              которые предлагает выбор индивидуальных беседок:
+              Выбор индивидуального навеса для вашей дачи предоставляет
+              множество преимуществ, делая ваш отдых более комфортным и
+              защищенным:
             </p>
             <div className="flex pt-4 gap-5">
               <div className="flex flex-col gap-2">
@@ -91,13 +87,12 @@ export default function Pavilions() {
                   <span className="text-[60px]">
                     <CgIfDesign></CgIfDesign>
                   </span>
-                  <h4 className="text-2xl">Уникальный дизайн</h4>
+                  <h4 className="text-2xl">Защита от погоды</h4>
                 </div>
                 <span className="text-base text-gray-additional">
-                  Беседка, созданная по индивидуальному заказу, позволит вам
-                  воплотить в жизнь свои уникальные идеи и предпочтения в
-                  дизайне. Вы сможете выбрать форму, размер, цвет и другие
-                  детали, которые отражают ваш стиль и характер.
+                  Навес обеспечивает надежную защиту от солнца, дождя и других
+                  погодных условий, позволяя вам наслаждаться отдыхом на свежем
+                  воздухе в любую погоду.
                 </span>
               </div>
               <div className="flex flex-col gap-2">
@@ -105,13 +100,12 @@ export default function Pavilions() {
                   <span className="text-[60px]">
                     <RiCustomerServiceLine></RiCustomerServiceLine>
                   </span>
-                  <h4 className="text-2xl">Подход к вашим потребностям</h4>
+                  <h4 className="text-2xl">Расширение пространства</h4>
                 </div>
                 <span className="text-base text-gray-additional">
-                  Индивидуальные беседки строятся с учетом ваших пожеланий и
-                  особенностей участка. Это позволяет создать идеальное
-                  пространство, которое соответствует вашим потребностям и
-                  желаниям.
+                  Навес создает дополнительное пространство на вашем участке,
+                  которое можно использовать для отдыха, барбекю, хранения
+                  садовых инструментов и других нужд.
                 </span>
               </div>
               <div className="flex flex-col gap-2">
@@ -119,15 +113,12 @@ export default function Pavilions() {
                   <span className="text-[60px]">
                     <TfiHummer></TfiHummer>
                   </span>
-                  <h4 className="text-2xl">
-                    Качество материалов и изготовления
-                  </h4>
+                  <h4 className="text-2xl">Индивидуальный дизайн</h4>
                 </div>
                 <span className="text-base text-gray-additional">
-                  При заказе индивидуальной беседки вы можете выбрать
-                  качественные материалы и доверить ее изготовление опытным
-                  профессионалам. Это гарантирует долговечность и надежность
-                  вашей беседки на долгие годы.
+                  Заказывая навес по индивидуальному проекту, вы можете выбрать
+                  дизайн, размер, форму и другие детали, которые отражают ваш
+                  стиль и соответствуют архитектуре вашего дома и участка.
                 </span>
               </div>
             </div>
@@ -137,6 +128,17 @@ export default function Pavilions() {
       </section>
       <section>
         <div className="max-w-screen-xl m-auto flex flex-col gap-10 p-10 py-20">
+          <div className="title flex items-center justify-center p-20 pb-5 ">
+            <h3 className="relative font-bold text-4xl leading-9 z-10 h-[40px] bg-white">
+              Разнообразие выбора и материалы
+            </h3>
+            <div className="title-border"></div>
+          </div>
+          <div className="text-lg">
+            Выбор индивидуального навеса для дачи предоставляет широкие
+            возможности для создания уникального и функционального пространства.
+            Вот некоторые из популярных вариантов:
+          </div>
           <div className="flex  gap-5 items-center bg-gray-product text-white p-10">
             <Image
               className="rounded"
@@ -148,9 +150,9 @@ export default function Pavilions() {
             <div>
               <h4 className="text-2xl text-orange font-bold">Дерево</h4>
               <span className="text-lg">
-                Беседки из дерева придают уют и натуральность вашему участку.
-                Деревянные конструкции могут быть выполнены из таких пород, как
-                сосна, ель, дуб, кедр и другие.
+                Навесы из натурального дерева придают вашему участку уют и
+                натуральность. Они могут быть выполнены из различных пород
+                дерева, таких как сосна, ель, дуб, кедр и другие.
               </span>
             </div>
           </div>
@@ -165,10 +167,10 @@ export default function Pavilions() {
             <div>
               <h4 className="text-2xl text-orange font-bold">Металл</h4>
               <span className="text-lg">
-                Металлические беседки обладают прочностью и долговечностью. Они
-                могут быть выполнены из стали, алюминия или других металлических
-                сплавов и отлично подходят для создания современного или
-                классического дизайна.
+                Металлические навесы обладают прочностью и долговечностью. Они
+                могут быть изготовлены из стали, алюминия или других
+                металлических сплавов и подходят для различных стилей
+                оформления.
               </span>
             </div>
           </div>
@@ -181,17 +183,17 @@ export default function Pavilions() {
               height={200}
             ></Image>
             <div>
-              <h4 className="text-2xl text-orange font-bold">Пластик</h4>
+              <h4 className="text-2xl text-orange font-bold">Ткань</h4>
               <span className="text-lg">
-                Беседки из пластика легкие, прочные и легко моются. Они доступны
-                в различных цветах и формах, что делает их отличным выбором для
-                современных и практичных решений.
+                Навесы с тканевым навесом обеспечивают легкость и воздушность.
+                Они могут быть выполнены из водоотталкивающих материалов и
+                предоставляют защиту от солнца и дождя.
               </span>
             </div>
           </div>
         </div>
       </section>
-      <section className="bg-gray-dark-block">
+      <section className="bg-gray-dark-block p-5">
         <div className="m-auto max-w-screen-xl py-20">
           <div className="examples-block-title text-white font-bold text-3xl relative">
             <h4 className="bg-gray-dark-block block mt-4 py-2 relative z-10">
@@ -200,20 +202,20 @@ export default function Pavilions() {
             <div className="absolute border w-[200px] h-[70px] border-gray-additional z-0 top-[-10px]"></div>
           </div>
           <div className="text-gray-additional text-lg py-10">
-            Выбирая нашу компанию для создания индивидуальной беседки для вашей
+            Выбирая нашу компанию для создания индивидуального навеса для вашей
             дачи, вы получаете:
           </div>
           <div className="grid grid-cols-3 gap-5">
             <div>
-              <div className="min-h-[576px] bg-gray-dark mb-10 bg-[url(/img/handsome.jpg)] bg-cover bg-[-300px]" ></div>
+              <div className="min-h-[576px] bg-gray-dark mb-10 bg-[url(/img/handsome.jpg)] bg-cover bg-[-300px]"></div>
               <div className="text-white flex flex-col gap-3">
                 <span className="text-orange text-2xl">
                   Профессионализм и опыт
                 </span>
                 <span className="text-lg">
                   Наша команда специалистов имеет многолетний опыт в создании
-                  качественных беседок на заказ и готова воплотить в жизнь ваши
-                  самые смелые идеи.
+                  качественных навесов на заказ и готова воплотить в жизнь ваши
+                  идеи и предпочтения.
                 </span>
               </div>
             </div>
@@ -244,6 +246,11 @@ export default function Pavilions() {
                 </span>
               </div>
             </div>
+          </div>
+          <div className="text-lg pt-10 text-white">
+            Выбирая нас, вы выбираете надежного партнера, который поможет
+            воплотить в жизнь ваши мечты о комфортном и стильном навесе для
+            вашей дачи.
           </div>
         </div>
       </section>
