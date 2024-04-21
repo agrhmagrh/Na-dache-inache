@@ -182,9 +182,9 @@ export default function Pavilions() {
               height={200}
             ></Image>
             <div>
-              <h4 className="text-2xl text-orange font-bold">Пластик</h4>
+              <h4 className="text-2xl text-orange font-bold">Древесно-полимерный композит</h4>
               <span className="text-lg">
-                Беседки из пластика легкие, прочные и легко моются. Они доступны
+                Беседки из ДКП легкие, прочные и легко моются. Они доступны
                 в различных цветах и формах, что делает их отличным выбором для
                 современных и практичных решений.
               </span>
