@@ -20,7 +20,7 @@ export default function Contact({type, isMain}: TypeMobileProps | TypeDesktopPro
         return false
    }
     return (
-        <div className={`flex ${type == "desktop" ? "justify-center" : "justify-end px-10 col-span-6"} gap-3 ${isMain ? "col-span-2" : "col-span-6"}`}>
+        <div className={`flex ${type == "desktop" ? "" : "justify-end px-10 col-span-6"} gap-3 ${isMain ? "col-span-2 justify-center" : "col-span-6 justify-end"}`}>
             {
                 // isMobile() ? 
                 <Link href={linkWhatsapp}><span className="border p-1 flex items-center text-2xl md:text-md" ><FaWhatsapp /></span></Link> 
