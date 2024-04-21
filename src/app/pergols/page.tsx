@@ -18,6 +18,7 @@ export default function Pavilions() {
     { url: "/img/pergola-3.jpg" },
     { url: "/img/pergola-4.jpg" },
     { url: "/img/pergola-5.jpg" },
+
   ];
 
   function closeModal() {
@@ -37,6 +38,7 @@ export default function Pavilions() {
             </h1>
             <span className="text-2xl p-5 pt-2 pb-10">
               Создание идеального укрытия от солнца и дождя
+
             </span>
             <div className="submit text-center text-white bg-orange m-3 text-2xl h-14  px-8">
               <input
@@ -79,6 +81,7 @@ export default function Pavilions() {
               Выбор индивидуальной перголы для вашей дачи предоставляет
               множество преимуществ, делая ваш отдых более комфортным и
               приятным:
+
             </p>
             <div className="flex pt-4 gap-5">
               <div className="flex flex-col gap-2">
@@ -92,6 +95,7 @@ export default function Pavilions() {
                   Пергола обеспечивает надежную защиту от палящего солнца, что
                   позволяет вам наслаждаться свежим воздухом на вашей даче даже
                   в самые жаркие дни.
+
                 </span>
               </div>
               <div className="flex flex-col gap-2">
@@ -105,6 +109,7 @@ export default function Pavilions() {
                   Пергола создает уютное пространство для отдыха и общения с
                   семьей и друзьями. Вы можете наслаждаться природой, проводить
                   время на свежем воздухе и отдыхать в уютной обстановке.
+
                 </span>
               </div>
               <div className="flex flex-col gap-2">
@@ -118,6 +123,7 @@ export default function Pavilions() {
                   Индивидуальные перголы изготавливаются из качественных
                   материалов и имеют прочную конструкцию, что обеспечивает их
                   долговечность и надежность на долгие годы.
+
                 </span>
               </div>
             </div>
@@ -138,6 +144,7 @@ export default function Pavilions() {
             возможности для создания уникального и стильного пространства. Вот
             некоторые из популярных вариантов:
           </div>
+
           <div className="flex  gap-5 items-center bg-gray-product text-white p-10">
             <Image
               className="rounded"
@@ -152,6 +159,7 @@ export default function Pavilions() {
                 Перголы из натурального дерева придают вашей даче естественный и
                 стильный вид. Они могут быть выполнены из различных пород
                 дерева, таких как сосна, ель, дуб, кедр и другие.
+
               </span>
             </div>
           </div>
@@ -170,6 +178,7 @@ export default function Pavilions() {
                 Они могут быть изготовлены из стали, алюминия или других
                 металлических сплавов и подходят для различных стилей
                 оформления.
+
               </span>
             </div>
           </div>
@@ -187,6 +196,7 @@ export default function Pavilions() {
                 Перголы с тканевым навесом обеспечивают легкость и воздушность.
                 Они могут быть выполнены из водоотталкивающих материалов и
                 предоставляют защиту от солнца и дождя.
+
               </span>
             </div>
           </div>
@@ -202,11 +212,13 @@ export default function Pavilions() {
           </div>
           <div className="text-gray-additional text-lg py-10">
             Выбирая нашу компанию для создания индивидуальной перголы для вашей
+
             дачи, вы получаете:
           </div>
           <div className="grid grid-cols-3 gap-5">
             <div>
               <div className="min-h-[576px] bg-gray-dark mb-10 bg-[url(/img/handsome.jpg)] bg-cover bg-[-300px]"></div>
+
               <div className="text-white flex flex-col gap-3">
                 <span className="text-orange text-2xl">
                   Профессионализм и опыт
@@ -215,6 +227,7 @@ export default function Pavilions() {
                   Наша команда специалистов имеет богатый опыт в создании
                   качественных пергол на заказ и готова воплотить в жизнь ваши
                   идеи и предпочтения.
+
                 </span>
               </div>
             </div>

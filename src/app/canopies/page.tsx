@@ -153,6 +153,7 @@ export default function Pavilions() {
                 Навесы из натурального дерева придают вашему участку уют и
                 натуральность. Они могут быть выполнены из различных пород
                 дерева, таких как сосна, ель, дуб, кедр и другие.
+
               </span>
             </div>
           </div>
@@ -171,6 +172,7 @@ export default function Pavilions() {
                 могут быть изготовлены из стали, алюминия или других
                 металлических сплавов и подходят для различных стилей
                 оформления.
+
               </span>
             </div>
           </div>
@@ -188,12 +190,14 @@ export default function Pavilions() {
                 Навесы с тканевым навесом обеспечивают легкость и воздушность.
                 Они могут быть выполнены из водоотталкивающих материалов и
                 предоставляют защиту от солнца и дождя.
+
               </span>
             </div>
           </div>
         </div>
       </section>
       <section className="bg-gray-dark-block p-5">
+
         <div className="m-auto max-w-screen-xl py-20">
           <div className="examples-block-title text-white font-bold text-3xl relative">
             <h4 className="bg-gray-dark-block block mt-4 py-2 relative z-10">
@@ -203,11 +207,13 @@ export default function Pavilions() {
           </div>
           <div className="text-gray-additional text-lg py-10">
             Выбирая нашу компанию для создания индивидуального навеса для вашей
+
             дачи, вы получаете:
           </div>
           <div className="grid grid-cols-3 gap-5">
             <div>
               <div className="min-h-[576px] bg-gray-dark mb-10 bg-[url(/img/handsome.jpg)] bg-cover bg-[-300px]"></div>
+
               <div className="text-white flex flex-col gap-3">
                 <span className="text-orange text-2xl">
                   Профессионализм и опыт
@@ -216,6 +222,7 @@ export default function Pavilions() {
                   Наша команда специалистов имеет многолетний опыт в создании
                   качественных навесов на заказ и готова воплотить в жизнь ваши
                   идеи и предпочтения.
+
                 </span>
               </div>
             </div>
@@ -252,6 +259,7 @@ export default function Pavilions() {
             воплотить в жизнь ваши мечты о комфортном и стильном навесе для
             вашей дачи.
           </div>
+
         </div>
       </section>
       <FormBlock></FormBlock>
