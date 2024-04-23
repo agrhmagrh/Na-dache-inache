@@ -2,9 +2,9 @@
 import Image from "next/image";
 
 import { createPortal } from "react-dom";
-import Modal from "../components/Modal";
+import Modal from "../../components/Modal";
 import { useState } from "react";
-import FormBlock from "../HomeSections/FormBlock";
+import FormBlock from "../../HomeSections/FormBlock";
 
 export default function Pavilions() {
   let [isOpen, setIsOpen] = useState(false);

@@ -2,9 +2,9 @@
 import Image from "next/image";
 
 import { createPortal } from "react-dom";
-import Modal from "../components/Modal";
+import Modal from "../../components/Modal";
 import { useState } from "react";
-import FormBlock from "../HomeSections/FormBlock";
+import FormBlock from "../../HomeSections/FormBlock";
 import { CgIfDesign } from "react-icons/cg";
 import { TfiHummer } from "react-icons/tfi";
 import { RiCustomerServiceLine } from "react-icons/ri";
