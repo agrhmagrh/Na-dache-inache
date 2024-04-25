@@ -66,18 +66,18 @@ const examplecardsRight = right.map(
 );
 
 function ExampleCard({ src, link, title, direction }: IExamplesCard) {
-  let classes = "example-card flex items-center ";
+  let classes = "example-card flex items-center col-span-2";
   if (direction == "right") {
     classes = classes.concat(" ", "flex-row-reverse");
   }
 
   return (
     <div className={classes}>
-      <Image width={425} height={425} src={src} alt=""></Image>
+      <Image className="w-full brightness-50 xl:brightness-100" width={425} height={425} src={src} alt=""></Image>
       <div
         className={
-          "card-info text-center flex flex-wrap flex-col justify-between h-3/4 border border-white " +
-          (direction == "right" ? "border-r-0" : "border-l-0")
+          "card-info text-center flex flex-wrap flex-col justify-between h-3/4 xl:border border-white " +
+          (direction == "right" ? "xl:border-r-0" : "xl:border-l-0")
         }
       >
         <div className="title text-white font-medium p-10">{title}</div>
@@ -102,16 +102,16 @@ export default function ExamplesBlock() {
 
   return (
     <section className="examples-block-wrapper bg-gray-dark-block">
-      <div className="columns-wrapper max-w-screen-xl m-auto py-28 flex gap-10 justify-between">
-        <div className="column-left flex flex-col gap-32">
-          <div className="examples-block-title text-white font-bold text-5xl relative">
+      <div className="columns-wrapper max-w-screen-xl m-auto py-28 xl:flex grid grid-cols-4  gap-10 justify-between">
+        <div className="column-left xl:flex flex-col xl:gap-32 col-span-4 grid grid-cols-4 gap-y-10">
+          <div className="examples-block-title text-white font-bold text-5xl relative col-span-4">
             <h4 className="bg-gray-dark-block block mt-4 py-2 relative z-10">
               Примеры работ
             </h4>
             <div className="absolute border w-[200px] h-[100px] border-gray-additional z-0 top-0"></div>
           </div>
           {examplecardsLeft}
-          <div className="example-form-block flex items-center gap-5">
+          <div className="example-form-block flex items-center gap-5 col-span-4">
             <div className="submit text-center text-white bg-orange m-3 text-2xl h-14  px-8">
               <input
                 onClick={openModal}

@@ -23,7 +23,7 @@ export default function Form({ btn }: FormType) {
   return (
     <form
       action=""
-      className="relative z-10 mx-auto my-10 flex flex-col gap-10 w-5/6"
+      className="relative z-10 mx-auto my-10 flex flex-col gap-10 xl:w-5/6 sm:w-3/6 w-5/6"
     >
       <div className="field relative">
         <input

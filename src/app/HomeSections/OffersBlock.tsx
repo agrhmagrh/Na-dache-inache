@@ -37,7 +37,7 @@ function CardsWrapper({ widthParent }: ICardsWrapper) {
   const [cards] = useState<IOffersCard[]>(() => cardsData);
 
   return (
-    <div className="offers-cards grid grid-cols-3 gap-5 px-10 py-5">
+    <div className="offers-cards flex flex-col sm:grid md:grid-cols-3  gap-5 px-10 py-5">
       {cards.map(({ title, link, src, columns }: IOffersCard, i) => {
         return (
           <Card
@@ -77,7 +77,7 @@ export default function OffersBlock({title}: any) {
         <div className="offers-cards-wrapper bg-white">
           <CardsWrapper widthParent={widthBlock}></CardsWrapper>
         </div>
-        <div className="offers-cards-info bg-gray-dark text-white text-xl p-12 pt-8">
+        <div className="offers-cards-info bg-gray-dark text-white md:text-xl p-12 pt-8">
           <p>
             Наша компания специализируемся на строительстве современных
             конструкций из дерева, таких как беседки, навесы, перголы и т.д. Мы

@@ -1,4 +1,4 @@
-import OffersBlock from "../HomeSections/OffersBlock";
+import OffersBlock from "../../HomeSections/OffersBlock";
 
 export default function Production() {
     return (
