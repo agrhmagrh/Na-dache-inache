@@ -4,7 +4,7 @@ import {MdPlace} from "react-icons/md"
 export default function Footer() {
   return (
     <footer className="footer bg-gray-dark text-white ">
-      <div className="company-info grid grid-cols-2 py-5 px-28 text-white text-xl">
+      <div className="company-info grid md:grid-cols-2 py-5 md:px-28 px-10 text-white text-xl gap-20">
         <div className="contact-info">
           <h4 className="pb-2">КОНТАКТЫ</h4>
           <p className="phone pb-1 flex items-center gap-3"><FaPhoneSquare className="rotate-90"/> +7 (499) 000-01-02</p>
@@ -21,10 +21,10 @@ export default function Footer() {
         </div>
       </div>
       <div className="separator border border-gray-additional"></div>
-      <div className="agreements grid grid-cols-3 py-10">
-        <div className="copyright flex justify-center items-center text-xl">Все права защищены © 2012-2024</div>
-        <div className="agreement flex justify-center items-center text-xl uppercase" >Пользовательское соглашение</div>
-        <div className="privacy-policy flex justify-center items-center text-xl uppercase">Политика конфиденциальности</div>
+      <div className="agreements grid md:grid-cols-3 py-10 gap-10 px-5">
+        <div className="copyright flex md:justify-center items-center text-xl order-last justify-end">Все права защищены © 2012-2024</div>
+        <div className="agreement flex md:justify-center items-center text-xl uppercase" >Пользовательское соглашение</div>
+        <div className="privacy-policy flex md:justify-center items-center text-xl uppercase">Политика конфиденциальности</div>
       </div>
     </footer>
   );

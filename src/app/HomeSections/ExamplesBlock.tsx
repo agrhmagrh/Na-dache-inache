@@ -1,10 +1,7 @@
-"use client";
 import { IExamplesCard } from "@/interfaces/ICard";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { createPortal } from "react-dom";
-import Modal from "../components/Modal";
+import ModalWrapper from "../shared/ModalWrapper";
 
 const exampleCardsData: IExamplesCard[][] = [
   [
@@ -66,7 +63,7 @@ const examplecardsRight = right.map(
 );
 
 function ExampleCard({ src, link, title, direction }: IExamplesCard) {
-  let classes = "example-card flex items-center col-span-2";
+  let classes = "example-card flex items-center col-span-4 md:col-span-2 relative xl:static p-5 md:p-10";
   if (direction == "right") {
     classes = classes.concat(" ", "flex-row-reverse");
   }
@@ -76,12 +73,12 @@ function ExampleCard({ src, link, title, direction }: IExamplesCard) {
       <Image className="w-full brightness-50 xl:brightness-100" width={425} height={425} src={src} alt=""></Image>
       <div
         className={
-          "card-info text-center flex flex-wrap flex-col justify-between h-3/4 xl:border border-white " +
+          "card-info text-center flex flex-wrap flex-col absolute xl:static top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 xl:-translate-x-0 xl:-translate-y-0 justify-between xl:h-3/4 xl:border border-white " +
           (direction == "right" ? "xl:border-r-0" : "xl:border-l-0")
         }
       >
         <div className="title text-white font-medium p-10">{title}</div>
-        <div className="link pb-10 text-orange font-bold text-2xl">
+        <div className="link pb-10 text-orange font-bold text-xl">
           <Link href="">{link.toUpperCase()}</Link>
         </div>
       </div>
@@ -90,48 +87,34 @@ function ExampleCard({ src, link, title, direction }: IExamplesCard) {
 }
 
 export default function ExamplesBlock() {
-  let [isOpen, setIsOpen] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
   return (
     <section className="examples-block-wrapper bg-gray-dark-block">
-      <div className="columns-wrapper max-w-screen-xl m-auto py-28 xl:flex grid grid-cols-4  gap-10 justify-between">
-        <div className="column-left xl:flex flex-col xl:gap-32 col-span-4 grid grid-cols-4 gap-y-10">
-          <div className="examples-block-title text-white font-bold text-5xl relative col-span-4">
-            <h4 className="bg-gray-dark-block block mt-4 py-2 relative z-10">
+      <div className="columns-wrapper max-w-screen-xl m-auto py-28 xl:flex grid grid-cols-4 grid-flow-row-dense gap-10 justify-between">
+
+        <div className="column-left xl:flex flex-col xl:gap-32 col-span-4 grid grid-cols-subgrid gap-y-10">
+          <div className="examples-block-title text-white font-bold text-5xl relative col-span-4 pl-5">
+            <h4 className="bg-gray-dark-block block mt-4 py-2 relative z-10 ">
               Примеры работ
             </h4>
             <div className="absolute border w-[200px] h-[100px] border-gray-additional z-0 top-0"></div>
           </div>
           {examplecardsLeft}
-          <div className="example-form-block flex items-center gap-5 col-span-4">
-            <div className="submit text-center text-white bg-orange m-3 text-2xl h-14  px-8">
-              <input
-                onClick={openModal}
-                className="block w-full h-full cursor-pointer"
-                type="submit"
-                value="Связаться с нами"
-              />
-              {isOpen &&
-                createPortal(
-                  <Modal isOpen={isOpen} onClose={() => closeModal()} />,
-                  document.body
-                )}
-            </div>
+          <div className="example-form-block xl:flex flex-col xl:flex-row items-center gap-5 hidden">
+            <ModalWrapper className={"submit text-center text-white bg-orange m-3 text-2xl h-14 px-8"} />
             <div className="additional-btn text-gray-additional h-8 text-base flex border-b border-solid border-gray-additional">
               <Link href="/projects">Все примеры работ</Link>
             </div>
           </div>
         </div>
-        <div className="column-right flex flex-col gap-32">
+
+        <div className="column-right xl:flex flex-col xl:gap-32 col-span-4 grid grid-cols-4 gap-y-10">
           {examplecardsRight}
+          <div className="example-form-block flex flex-col xl:flex-row items-center gap-5 md:self-center md:col-span-2 col-span-4 xl:hidden">
+          <ModalWrapper className={"submit text-center text-white bg-orange m-3 text-2xl h-14 px-8"} />
+            <div className="additional-btn text-gray-additional h-8 text-base flex border-b border-solid border-gray-additional">
+              <Link href="/projects">Все примеры работ</Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>

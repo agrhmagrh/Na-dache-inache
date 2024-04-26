@@ -29,12 +29,12 @@ const links = linksData.map(({ title, link }, i) => {
   return (
     <div
       key={i}
-      className="link-item w-full flex items-center justify-center font-medium text-4xl text-white h-28 bg-gray-dark-block"
+      className="link-item  flex items-center justify-center font-medium xl:text-4xl text-2xl text-white h-28 bg-gray-dark-block"
     >
       <Link
         target="_blank"
         href={link}
-        className="w-full h-full flex items-center justify-center"
+        className=" h-full flex items-center justify-center text-center"
       >
         {title}
       </Link>
@@ -45,17 +45,17 @@ const links = linksData.map(({ title, link }, i) => {
 export default function LinksBlock() {
   return (
     <section className="bg-white">
-      <div className="wrapper-block max-w-screen-2xl m-auto p-10 grid grid-cols-12 gap-20 ">
-        <div className="decription-wrapper col-span-7  ">
-          <div className="decription text-gray-dark text-4xl py-10 font-medium text-wrap">
+      <div className="wrapper-block max-w-screen-2xl m-auto p-10 grid grid-cols-4 xl:grid-cols-12 md:gap-20 gap-5 ">
+        <div className="decription-wrapper xl:col-span-7 col-span-full">
+          <div className="decription text-gray-dark xl:text-4xl text-2xl py-10 font-medium text-wrap">
             Для большего комфорта и приятного время препровождения в построенных
             сооружениях мы предлагаем:
           </div>
-          <div className="description-images flex justify-between gap-5">
+          <div className="description-images md:flex xl:justify-between justify-center xl:gap-5 gap-20 hidden">
             {images}
           </div>
         </div>
-        <div className="links-wrapper flex flex-col justify-between gap-5 col-span-5">
+        <div className="links-wrapper flex flex-col justify-between gap-5 xl:col-span-5 col-span-full">
           {links}
         </div>
       </div>
