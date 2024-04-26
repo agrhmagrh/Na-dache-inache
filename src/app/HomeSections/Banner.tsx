@@ -25,7 +25,7 @@ export default function Banner() {
         </div>
         <div className="form-wrapper form-border bg-gray-dark-block xl:w-2/6 relative">
           <div className="background-form hidden xl:block"></div>
-          <div className="form-column mt-16 flex flex-col items-center">
+          <div className="form-column mt-16 flex flex-col items-center xl:w-5/6 sm:w-3/6 m-auto">
             <div className="form-title relative z-10 text-white text-3xl text-center">
               <h2>Закажите эскиз конструкции</h2>
             </div>

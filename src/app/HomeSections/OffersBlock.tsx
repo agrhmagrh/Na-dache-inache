@@ -1,10 +1,7 @@
-"use client";
-
 import { IOffersCard, ICardsWrapper } from "@/interfaces/ICard";
 import Card from "../components/Card";
-import { useEffect, useRef, useState } from "react";
 import { solutions } from "../contstants/const";
-const [b, n, p, h] = solutions
+const [b, n, p, h] = solutions;
 
 const cardsData: IOffersCard[] = [
   {
@@ -34,11 +31,9 @@ const cardsData: IOffersCard[] = [
 ];
 
 function CardsWrapper({ widthParent }: ICardsWrapper) {
-  const [cards] = useState<IOffersCard[]>(() => cardsData);
-
   return (
-    <div className="offers-cards flex flex-col sm:grid md:grid-cols-3  gap-5 px-10 py-5">
-      {cards.map(({ title, link, src, columns }: IOffersCard, i) => {
+    <div className="offers-cards flex flex-col sm:grid md:grid-cols-3 gap-5 px-10 py-5">
+      {cardsData.map(({ title, link, src, columns }: IOffersCard, i) => {
         return (
           <Card
             key={i}
@@ -54,20 +49,10 @@ function CardsWrapper({ widthParent }: ICardsWrapper) {
   );
 }
 
-export default function OffersBlock({title}: any) {
-  const content = useRef<HTMLDivElement>(null);
-  const [widthBlock, setWidthBlock] = useState<number>(0);
-
-  useEffect(() => {
-    setWidthBlock(content.current?.offsetWidth as number);
-  }, []);
-
+export default function OffersBlock({ title }: any) {
   return (
     <section className="offers-block bg-gray-light relative pb-20">
-      <div
-        ref={content}
-        className="content-offers max-w-screen-xl m-auto z-10 relative"
-      >
+      <div className="content-offers max-w-screen-xl m-auto z-10 relative">
         <div className="title flex items-center justify-center p-20 ">
           <h3 className="relative font-bold text-4xl leading-9 z-10 h-[40px] bg-gray-light">
             {title || "Мы строим"}
@@ -75,7 +60,7 @@ export default function OffersBlock({title}: any) {
           <div className="title-border"></div>
         </div>
         <div className="offers-cards-wrapper bg-white">
-          <CardsWrapper widthParent={widthBlock}></CardsWrapper>
+          <CardsWrapper />
         </div>
         <div className="offers-cards-info bg-gray-dark text-white md:text-xl p-12 pt-8">
           <p>
