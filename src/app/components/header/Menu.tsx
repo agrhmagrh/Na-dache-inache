@@ -1,21 +1,31 @@
 "use client";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { BiChevronDown, BiMenu } from "react-icons/bi";
+import { BiChevronDown, BiChevronUp, BiMenu } from "react-icons/bi";
 import { Popover, Transition } from "@headlessui/react";
 import { solutions, callsToAction } from "@/app/contstants/const";
 import { usePathname } from "next/navigation";
 import { TypeMobileProps } from "@/types";
 
-
-
 export default function Menu({ type }: TypeMobileProps) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [expandMenu, setExpandMenu] = useState(true);
+  const header = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isOpen]);
 
   function toggleMenu() {
-    setIsOpen(prev => !prev)
-    
+    setIsOpen((prev) => !prev);
+  }
+  function toggleExpandMenu() {
+    setExpandMenu((prev) => !prev);
   }
 
   return type == "desktop" ? (
@@ -48,7 +58,7 @@ export default function Menu({ type }: TypeMobileProps) {
                       className={
                         pathname === item.href
                           ? "bg-orange text-white group relative flex  p-4"
-                          : "group relative flex  p-4 hover:bg-orange hover:text-white"
+                          : "group relative flex p-4 hover:bg-orange hover:text-white"
                       }
                     >
                       <div>
@@ -89,10 +99,69 @@ export default function Menu({ type }: TypeMobileProps) {
       </ul>
     </nav>
   ) : (
-    <nav className="h-full flex items-center justify-center">
-      <button onClick={toggleMenu} className="md:text-[60px] text-[40px] text-[#C4C4C4] px-5 md:px-10">
-        <BiMenu />
-      </button>
-    </nav>
+    <>
+      <div ref={header} className="h-full flex items-center justify-center">
+        <button
+          onClick={toggleMenu}
+          className="md:text-[60px] text-[40px] text-[#C4C4C4] px-5 md:px-10"
+        >
+          <BiMenu />
+        </button>
+      </div>
+      <Transition
+        as={Fragment}
+        show={isOpen}
+        enter="transition ease-out duration-300"
+        enterFrom="opacity-0 -translate-x-52"
+        enterTo="opacity-100 translate-x-0"
+        leave="transition ease-in duration-150"
+        leaveFrom="opacity-100 translate-x-0"
+        leaveTo="opacity-0 -translate-x-52"
+      >
+        <aside
+          className={"absolute h-screen bg-white z-30 min-w-[280px]"}
+          style={{
+            top: header.current?.offsetHeight + "px",
+          }}
+        >
+          <nav className="bg-white h-full border-r border-t border-gray-additional">
+            <ul>
+              <li
+                onClick={toggleExpandMenu}
+                className="menu-list-item flex items-center gap-1 text-sm p-4 cursor-pointer"
+              >
+                Каталог{" "}
+                {!expandMenu ? (
+                  <BiChevronDown className="text-2xl" />
+                ) : (
+                  <BiChevronUp className="text-2xl" />
+                )}
+              </li>
+              {expandMenu &&
+                solutions.map((solution, i) => {
+                  return (
+                    <li
+                      className={`menu-list-item p-4 pl-6 text-sm ${pathname == solution.href ? "bg-orange text-white" : "hover:bg-gray-light"}`}
+                      key={i}
+                    >
+                      <Link href={solution.href}>{solution.name}</Link>
+                    </li>
+                  );
+                })}
+              <li
+                className={`menu-list-item p-4 text-sm ${pathname == "/production" ? "bg-orange text-white" : "hover:bg-gray-light"}`}
+              >
+                <Link href="/production">О произвостве</Link>
+              </li>
+              <li
+                className={`menu-list-item p-4 text-sm ${pathname == "/contacts" ? "bg-orange text-white" : "hover:bg-gray-light"}`}
+              >
+                <Link href="/contacts">Контакты</Link>
+              </li>
+            </ul>
+          </nav>
+        </aside>
+      </Transition>
+    </>
   );
 }
