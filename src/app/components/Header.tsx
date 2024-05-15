@@ -2,7 +2,7 @@
 import Logo from "./header/Logo";
 import Menu from "./header/Menu";
 import Contact from "./header/Contact"
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TypeDesktopProps, TypeMobileProps } from "@/types";
 
 export default function Header({isMain}: TypeDesktopProps | TypeMobileProps) {

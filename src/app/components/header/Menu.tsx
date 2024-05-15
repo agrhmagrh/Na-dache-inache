@@ -13,6 +13,7 @@ export default function Menu({ type }: TypeMobileProps) {
   const [expandMenu, setExpandMenu] = useState(true);
   const header = useRef<HTMLDivElement>(null);
 
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -62,7 +63,7 @@ export default function Menu({ type }: TypeMobileProps) {
                       }
                     >
                       <div>
-                        <Link href={item.href} className={"font-semibold"}>
+                        <Link href={item.href} className={"font-semibold"} onClick={()=> {}}>
                           {item.name}
                           <span className="absolute inset-0" />
                         </Link>

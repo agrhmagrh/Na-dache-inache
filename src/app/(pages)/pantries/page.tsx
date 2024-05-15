@@ -1,21 +1,8 @@
-"use client";
 import Image from "next/image";
-
-import { createPortal } from "react-dom";
-import Modal from "../../components/Modal";
-import { useState } from "react";
 import FormBlock from "../../HomeSections/FormBlock";
+import ButtonModal from "@/app/components/ButtonModal";
 
 export default function Pavilions() {
-  let [isOpen, setIsOpen] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
   return (
     <main>
       <section className="bg-gray-dark h-[700px] bg-[url(/img/hoz-banner.jpg)] bg-top bg-no-repeat bg-cover">
@@ -27,19 +14,7 @@ export default function Pavilions() {
             <span className="md:text-2xl p-5 pt-2 pb-10">
               Создание пространства для комфорта и хранения
             </span>
-            <div className="submit text-center text-white bg-orange m-3 text-2xl h-14 px-8">
-              <input
-                onClick={openModal}
-                className="block w-full h-full cursor-pointer"
-                type="submit"
-                value="Связаться с нами"
-              />
-              {isOpen &&
-                createPortal(
-                  <Modal isOpen={isOpen} onClose={() => closeModal()} />,
-                  document.body
-                )}
-            </div>
+              <ButtonModal />
           </div>
         </div>
       </section>
