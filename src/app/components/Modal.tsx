@@ -1,8 +1,7 @@
 "use client"
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import Form from './Form'
-import { TiTimes } from 'react-icons/ti'
 import { FaTimes } from 'react-icons/fa'
 
 export default function MyModal({isOpen, onClose }: any) {

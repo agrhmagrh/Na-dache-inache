@@ -2,6 +2,8 @@
 import Link from "next/link";
 import {
   ChangeEvent,
+  SyntheticEvent,
+  useState,
 } from "react";
 
 type FormType = {
@@ -9,6 +11,19 @@ type FormType = {
 };
 
 export default function Form({ btn }: FormType) {
+
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+  });
+
+  const handleChange = (e: any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+  };
 
   function isDirty(event: ChangeEvent<HTMLInputElement>) {
     const { target } = event;
@@ -22,12 +37,14 @@ export default function Form({ btn }: FormType) {
 
   return (
     <form
+      onSubmit={handleSubmit}
       action=""
       className="relative z-10 mx-auto my-10 flex flex-col gap-10  w-5/6"
     >
       <div className="field relative">
         <input
           onBlur={isDirty}
+          onChange={handleChange}
           type="text"
           name="name"
           id="name"
@@ -44,6 +61,7 @@ export default function Form({ btn }: FormType) {
       <div className="field relative">
         <input
           onBlur={isDirty}
+          onChange={handleChange}
           type="phone"
           name="phone"
           id="phone"
