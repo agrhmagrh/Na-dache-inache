@@ -1,21 +1,20 @@
-"use client"
+"use client";
 import Link from "next/link";
-import {
-  ChangeEvent,
-  SyntheticEvent,
-  useState,
-} from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 
 type FormType = {
   btn: string;
 };
 
+type Responsetype = { status: "ok" | "error" };
 export default function Form({ btn }: FormType) {
-
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
+    name: "",
+    phone: "",
   });
+
+  const [status, setStatus] = useState<"ok" | "error" | null>(null);
+  const [disabled, setDisableForm] = useState<boolean>(false);
 
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,6 +22,22 @@ export default function Form({ btn }: FormType) {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    setDisableForm((p)=>!p)
+    try {
+      const f = await fetch("/api", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+      if (f.status == 200 || f.status == 500) {
+        const r: Responsetype = await f.json();
+        setStatus(r.status);
+      }
+      
+    } catch (error) {
+      setStatus("error")
+    } finally {
+      setDisableForm((p)=>!p)
+    }
   };
 
   function isDirty(event: ChangeEvent<HTMLInputElement>) {
@@ -76,12 +91,23 @@ export default function Form({ btn }: FormType) {
           Телефон
         </label>
       </div>
-      <div className="form-submit-wrapper flex flex-col gap-6 items-center m-2 mt-7">
+      <div className="form-submit-wrapper flex flex-col gap-6 items-center m-2">
+        {status == "ok" && (
+          <div className="text-center text-xl p-2">
+            Заявка отправлена. В ближайшее время менеджер перезвонит вам
+          </div>
+        )}
+        {status == "error" && (
+          <div className="text-center text-xl">
+            Произошла ошибка при отправке, перезвоните нам
+          </div>
+        )}
         <div className="submit w-full text-center text-white bg-orange m-3 text-xl h-11">
           <input
+            disabled={disabled}
             type="submit"
             value={btn}
-            className="block w-full h-full cursor-pointer"
+            className="block w-full h-full cursor-pointer disabled:backdrop-brightness-50 disabled:opacity-50 disabled:cursor-not-allowed"
           />
         </div>
         <div className="additional-btn text-gray-additional h-8 text-base flex border-b border-solid border-gray-additional">
