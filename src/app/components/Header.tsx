@@ -22,14 +22,14 @@ export default function Header({isMain}: TypeDesktopProps | TypeMobileProps) {
 }
 
 function DesktopHeader({type, isMain}: TypeDesktopProps) {
-  return <header className="header bg-white grid grid-cols-12 items-center relative max-w-screen-2xl m-auto" >
+  return <header className="header bg-white grid grid-cols-12 items-center sticky max-w-screen-2xl m-auto top-0 z-20" >
   <Logo ></Logo>
   <Menu type={type}></Menu>
   <Contact type={type} isMain={isMain}></Contact>
 </header>
 }
 function MobileHeader({type}: TypeMobileProps) {
-  return  <header className="header bg-white grid grid-cols-8 items-center w-full relative m-auto">
+  return  <header className="header bg-white grid grid-cols-8 items-center w-full m-auto sticky top-0 z-20">
   <Menu type={type}></Menu>
   <Logo ></Logo>
   <Contact type={type}></Contact>

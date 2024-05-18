@@ -182,7 +182,7 @@ export default function Pavilions() {
             дачи, вы получаете:
           </div>
           <div className="grid md:grid-cols-3 gap-5">
-            <div>
+            <div className="flex flex-col">
               <div className="text-white flex flex-col gap-3 p-2 md:order-last">
                 <span className="text-orange text-2xl">
                   Профессионализм и опыт
@@ -195,7 +195,7 @@ export default function Pavilions() {
               </div>
               <div className="min-h-[576px] bg-gray-dark mb-10 bg-[url(/img/handsome.jpg)] bg-cover bg-[-300px]"></div>
             </div>
-            <div>
+            <div className="flex flex-col">
               <div className="text-white flex flex-col gap-3">
                 <span className="text-orange text-2xl">
                   Индивидуальный подход
@@ -208,7 +208,7 @@ export default function Pavilions() {
               </div>
               <div className="min-h-[576px] bg-gray-dark mt-10 bg-[url(/img/quality.jpg)] bg-cover"></div>
             </div>
-            <div>
+            <div className="flex flex-col">
               <div className="text-white flex flex-col gap-3 p-2 md:order-last">
                 <span className="text-orange text-2xl">
                   Качество и гарантия
