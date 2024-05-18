@@ -17,7 +17,9 @@ const config: Config = {
       "orange": "#FF992B",
       "gray-menu": "#C4C4C4",
       "black": "#000000",
-      "black-70": "rgba(0, 0, 0, 70%)"
+      "black-70": "rgba(0, 0, 0, 70%)",
+      "red": "#CD5C5C",
+      "green": "#98FB98",
     }
   },
   plugins: [],

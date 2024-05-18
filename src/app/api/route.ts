@@ -28,7 +28,6 @@ export async function POST(request: Request) {
 
     message.fillText(name, phone);
     const info = await transporter.sendMail(message);
-    console.log("Message sent: %s", info);
     return NextResponse.json(
       { status: "ok" },
       {
