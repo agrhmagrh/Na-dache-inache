@@ -5,6 +5,7 @@ import { CgIfDesign } from "react-icons/cg";
 import { TfiHummer } from "react-icons/tfi";
 import { RiCustomerServiceLine } from "react-icons/ri";
 import ButtonModal from "@/app/components/ButtonModal";
+import LightImage from "@/app/components/LightImage";
 
 
 export default function Pavilions() {
@@ -48,7 +49,7 @@ export default function Pavilions() {
             {pavilions.map((bg, i) => {
               return (
                 <div key={i} className="col-span-1 m-auto">
-                  <Image width={310} height={310} src={bg.url} alt="" />
+                 <LightImage url={bg.url}></LightImage>
                 </div>
               );
             })}

@@ -1,14 +1,13 @@
 import Image from "next/image";
 
-
 import FormBlock from "../../HomeSections/FormBlock";
 import { CgIfDesign } from "react-icons/cg";
 import { TfiHummer } from "react-icons/tfi";
 import { RiCustomerServiceLine } from "react-icons/ri";
 import ButtonModal from "@/app/components/ButtonModal";
+import LightImage from "@/app/components/LightImage";
 
 export default function Pavilions() {
-
   const pavilions = [
     { url: "/img/pergola-1.jpg" },
     { url: "/img/pergola-2.jpg" },
@@ -16,7 +15,6 @@ export default function Pavilions() {
     { url: "/img/pergola-4.jpg" },
     { url: "/img/pergola-5.jpg" },
   ];
-
 
   return (
     <main>
@@ -45,7 +43,7 @@ export default function Pavilions() {
             {pavilions.map((bg, i) => {
               return (
                 <div key={i} className="col-span-1 m-auto">
-                  <Image width={310} height={310} src={bg.url} alt="" />
+                  <LightImage url={bg.url}></LightImage>
                 </div>
               );
             })}
@@ -184,7 +182,7 @@ export default function Pavilions() {
             дачи, вы получаете:
           </div>
           <div className="grid md:grid-cols-3 gap-5">
-            <div>
+            <div className="flex flex-col">
               <div className="text-white flex flex-col gap-3 p-2 md:order-last">
                 <span className="text-orange text-2xl">
                   Профессионализм и опыт
@@ -197,7 +195,7 @@ export default function Pavilions() {
               </div>
               <div className="min-h-[576px] bg-gray-dark mb-10 bg-[url(/img/handsome.jpg)] bg-cover bg-[-300px]"></div>
             </div>
-            <div>
+            <div className="flex flex-col">
               <div className="text-white flex flex-col gap-3">
                 <span className="text-orange text-2xl">
                   Индивидуальный подход
@@ -210,7 +208,7 @@ export default function Pavilions() {
               </div>
               <div className="min-h-[576px] bg-gray-dark mt-10 bg-[url(/img/quality.jpg)] bg-cover"></div>
             </div>
-            <div>
+            <div className="flex flex-col">
               <div className="text-white flex flex-col gap-3 p-2 md:order-last">
                 <span className="text-orange text-2xl">
                   Качество и гарантия
