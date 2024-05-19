@@ -22,7 +22,7 @@ export default function Header({isMain}: TypeDesktopProps | TypeMobileProps) {
 }
 
 function DesktopHeader({type, isMain}: TypeDesktopProps) {
-  return <header className="header bg-white grid grid-cols-12 items-center sticky max-w-screen-2xl m-auto top-0 z-20" >
+  return <header className="header bg-white grid grid-cols-12 items-center max-w-screen-2xl m-auto top-0 z-20" >
   <Logo ></Logo>
   <Menu type={type}></Menu>
   <Contact type={type} isMain={isMain}></Contact>

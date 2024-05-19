@@ -13,4 +13,6 @@ export type IExamplesCard = {
   title: string;
   link: string;
   direction?: string;
+  href: string;
+  target?: string
 };

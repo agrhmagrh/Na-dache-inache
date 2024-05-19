@@ -7,14 +7,14 @@ export default function Pavilions() {
     <main>
       <section className="bg-gray-dark h-[700px] bg-[url(/img/hoz-banner.jpg)] bg-top bg-no-repeat bg-cover">
         <div className="max-w-screen-xl m-auto flex items-center justify-end h-full p-1">
-          <div className="xl:w-[500px] bg-white p-3  flex flex-col">
+          <div className="md:w-[500px] bg-white p-3  flex flex-col">
             <h1 className="md:text-4xl text-xl p-5 pb-2">
               Индивидуальные помещения хозяйственного назначения для дачи
             </h1>
             <span className="md:text-2xl p-5 pt-2 pb-10">
               Создание пространства для комфорта и хранения
             </span>
-              <ButtonModal />
+            <ButtonModal />
           </div>
         </div>
       </section>
@@ -26,23 +26,59 @@ export default function Pavilions() {
             </h3>
             <div className="title-border"></div>
           </div>
-          <div className="offers-cards-wrapper bg-white grid md:grid-cols-2 gap-5 p-10 px-10 justify-center">
-          <div className={"col-span-1 relative bg-[url('/img/hoz-1.jpg')] bg-cover bg-center min-h-[400px]"}>
-            <div className="absolute top-1/2 text-nowrap m-auto md:px-10 p-5 min-w-[250px] -translate-x-1/2 -translate-y-1/2 left-1/2 text-center bg-black-70 text-white">Сараи и кладовые</div>
-            <div className="absolute bottom-0 px-2 py-4 bg-gray-product text-white">Предназначены для хранения садовых инструментов, инвентаря, семян, удобрений и других необходимых материалов.</div>
-          </div>
-          <div className={"col-span-1 relative bg-[url('/img/hoz-2.jpg')] bg-cover bg-center min-h-[400px]"}>
-            <div className="absolute top-1/2 text-nowrap m-auto md:px-10 p-5 min-w-[250px] -translate-x-1/2 -translate-y-1/2 left-1/2 text-center bg-black-70 text-white">Бытовки и домики для персонала </div>
-            <div className="absolute bottom-0 px-2 py-4 bg-gray-product text-white">Используются для временного проживания или отдыха на участке, а также для размещения садовых работников или дачников.</div>
-          </div>
-          <div className={"col-span-1 relative bg-[url('/img/hoz-3.jpg')] bg-cover bg-center min-h-[400px]"}>
-            <div className="absolute top-1/2 text-nowrap m-auto md:px-10 p-5 min-w-[250px] -translate-x-1/2 -translate-y-1/2 left-1/2 text-center bg-black-70 text-white">Беседки и веранды</div>
-            <div className="absolute bottom-0 px-2 py-4 bg-gray-product text-white">Создают комфортное пространство для отдыха и общения с семьей и друзьями на свежем воздухе.</div>
-          </div>
-          <div className={"col-span-1 relative bg-[url('/img/hoz-4.jpg')] bg-cover bg-center min-h-[400px]"}>
-            <div className="absolute top-1/2 text-nowrap m-auto md:px-10 p-5 min-w-[250px] -translate-x-1/2 -translate-y-1/2 left-1/2 text-center bg-black-70 text-white">Теплицы и оранжереи</div>
-            <div className="absolute bottom-0 px-2 py-4 bg-gray-product text-white">Используются для выращивания растений, цветов и овощей в течение всего года.</div>
-          </div>
+          <div className="offers-cards-wrapper bg-white grid md:grid-cols-2 grid-cols-1 gap-5 p-10 px-10 justify-center">
+            <div
+              className={
+                "col-span-1 relative bg-[url('/img/hoz-1.jpg')] bg-cover bg-center min-h-[400px]"
+              }
+            >
+              <div className="absolute top-1/2 text-nowrap m-auto md:px-10 p-5 min-w-[250px] -translate-x-1/2 -translate-y-1/2 left-1/2 text-center bg-black-70 text-white">
+                Сараи и кладовые
+              </div>
+              <div className="absolute bottom-0 px-2 py-4 bg-gray-product text-white">
+                Предназначены для хранения садовых инструментов, инвентаря,
+                семян, удобрений и других необходимых материалов.
+              </div>
+            </div>
+            <div
+              className={
+                "col-span-1 relative bg-[url('/img/hoz-2.jpg')] bg-cover bg-center min-h-[400px]"
+              }
+            >
+              <div className="absolute top-1/2 text-nowrap m-auto md:px-10 p-5 min-w-[250px] -translate-x-1/2 -translate-y-1/2 left-1/2 text-center bg-black-70 text-white">
+                Бытовки и домики для персонала{" "}
+              </div>
+              <div className="absolute bottom-0 px-2 py-4 bg-gray-product text-white">
+                Используются для временного проживания или отдыха на участке, а
+                также для размещения садовых работников или дачников.
+              </div>
+            </div>
+            <div
+              className={
+                "col-span-1 relative bg-[url('/img/hoz-3.jpg')] bg-cover bg-center min-h-[400px]"
+              }
+            >
+              <div className="absolute top-1/2 text-nowrap m-auto md:px-10 p-5 min-w-[250px] -translate-x-1/2 -translate-y-1/2 left-1/2 text-center bg-black-70 text-white">
+                Беседки и веранды
+              </div>
+              <div className="absolute bottom-0 px-2 py-4 bg-gray-product text-white">
+                Создают комфортное пространство для отдыха и общения с семьей и
+                друзьями на свежем воздухе.
+              </div>
+            </div>
+            <div
+              className={
+                "col-span-1 relative bg-[url('/img/hoz-4.jpg')] bg-cover bg-center min-h-[400px]"
+              }
+            >
+              <div className="absolute top-1/2 text-nowrap m-auto md:px-10 p-5 min-w-[250px] -translate-x-1/2 -translate-y-1/2 left-1/2 text-center bg-black-70 text-white">
+                Теплицы и оранжереи
+              </div>
+              <div className="absolute bottom-0 px-2 py-4 bg-gray-product text-white">
+                Используются для выращивания растений, цветов и овощей в течение
+                всего года.
+              </div>
+            </div>
           </div>
           <div className="offers-cards-info bg-gray-dark text-white text-xl p-12 pt-8">
             <h3 className="py-3 text-2xl text-orange">Предложения по цене</h3>
