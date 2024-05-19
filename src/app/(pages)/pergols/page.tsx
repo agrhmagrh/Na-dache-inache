@@ -14,6 +14,7 @@ export default function Pavilions() {
     { url: "/img/pergola-3.jpg" },
     { url: "/img/pergola-4.jpg" },
     { url: "/img/pergola-5.jpg" },
+    { url: "/img/pergola-6.jpg" },
   ];
 
   return (
@@ -39,10 +40,10 @@ export default function Pavilions() {
             </h3>
             <div className="title-border"></div>
           </div>
-          <div className="offers-cards-wrapper bg-white grid md:grid-cols-3 grid-cols-1 gap-2 p-10 md:px-40 justify-center">
+          <div className="offers-cards-wrapper bg-white grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-2 p-10 xl:px-40 px-10 justify-center">
             {pavilions.map((bg, i) => {
               return (
-                <div key={i} className="col-span-1 m-auto">
+                <div key={i} className="col-span-1 m-auto h-full">
                   <LightImage url={bg.url}></LightImage>
                 </div>
               );
@@ -153,7 +154,7 @@ export default function Pavilions() {
           <div className="grid grid-cols-8 sm:grid-rows-2 grid-rows-4 gap-x-5 items-center bg-gray-product text-white p-10">
             <Image
               className="rounded col-span-2 xl:row-span-4 row-span-1"
-              src={"/img/plastic.jpg"}
+              src={"/img/pergola-tkan.jpg"}
               alt="Дерево беседка"
               width={200}
               height={200}

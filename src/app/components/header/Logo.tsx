@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 export default function Logo() {
   return (
-    <div className="logo bg-white  col-span-1 p-2">
+    <div className="logo bg-white  col-span-1 md:p-2 p-0">
       <Link href={"/"}>
         <Image
           width={144}

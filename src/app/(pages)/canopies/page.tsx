@@ -41,10 +41,10 @@ export default function Pavilions() {
             </h3>
             <div className="title-border"></div>
           </div>
-          <div className="offers-cards-wrapper bg-white grid md:grid-cols-3 grid-cols-1 gap-2 p-10 md:px-40 justify-center">
+          <div className="offers-cards-wrapper bg-white grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-2 p-10 xl:px-40 px-10 justify-center">
             {pavilions.map((bg, i) => {
               return (
-                <div key={i} className="col-span-1 m-auto">
+                <div key={i} className="col-span-1 m-auto h-full">
                   <LightImage url={bg.url}></LightImage>
                 </div>
               );
