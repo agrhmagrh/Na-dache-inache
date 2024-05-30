@@ -5,10 +5,10 @@ export default function Logo() {
     <div className="logo bg-white  col-span-1 md:p-2 p-0">
       <Link href={"/"}>
         <Image
-          width={144}
-          height={70}
+          width={100}
+          height={0}
           src="/img/Logo.png"
-          alt="На даче иначе!"
+          alt="Беседка Лофт"
         ></Image>
       </Link>
     </div>
