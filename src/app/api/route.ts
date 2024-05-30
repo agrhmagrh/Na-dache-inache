@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 const message = {
-  from: `Сайт "На даче иначе" <${process.env.EMAIL_ADDRESS}>`,
+  from: `Сайт "Беседка Лофт" <${process.env.EMAIL_ADDRESS}>`,
   to: process.env.TO_ADDRESS,
   subject: "Заявка с формы",
   text: "",
