@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
 import Metrika from "./components/Metrika";
+import { Suspense } from "react";
 
 const rubik = Rubik({ subsets: ["latin", "cyrillic"] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={rubik.className}>{children}</body>
+      <Suspense>
         <Metrika />
+      </Suspense>
     </html>
   );
 }
