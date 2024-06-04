@@ -8,6 +8,7 @@ export default function Metrika() {
     const pathName = usePathname()
     const searchParams = useSearchParams();
     useEffect(()=> {
+        //@ts-ignore
         ym(97421598, "hit", window.location.href);
     }, [pathName, searchParams])
     return (
