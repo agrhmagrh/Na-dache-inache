@@ -7,7 +7,7 @@ import { SEO } from "@/seo";
 
 const rubik = Rubik({ subsets: ["latin", "cyrillic"] });
 
-export const metadata: Metadata = SEO
+export const metadata: Metadata = SEO;
 
 export default function RootLayout({
   children,
@@ -16,10 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={rubik.className}>{children}</body>
-      <Suspense>
-        <Metrika />
-      </Suspense>
+      <body className={rubik.className}>
+        {children}
+        <Suspense>
+          <Metrika />
+        </Suspense>
+      </body>
     </html>
   );
 }
