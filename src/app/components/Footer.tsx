@@ -7,8 +7,8 @@ export default function Footer() {
       <div className="company-info grid md:grid-cols-2 py-5 md:px-28 px-10 text-white text-xl gap-20">
         <div className="contact-info">
           <h4 className="pb-2">КОНТАКТЫ</h4>
-          <p className="phone pb-1 flex items-center gap-3"><FaPhoneSquare className="rotate-90"/> +7 (499) 000-01-02</p>
-          <p className="whatsapp pb-1 flex items-center gap-3"><FaWhatsapp />+7 (999) 897-11-22</p>
+          <p className="phone pb-1 flex items-center gap-3"><FaPhoneSquare className="rotate-90"/> <a href="tel:+74993904395">+7 (499) 390-43-95</a></p>
+          <p className="whatsapp pb-1 flex items-center gap-3"><FaWhatsapp /><a href="tel:+79856309336">+7 (985) 630-93-36</a></p>
           <p className="place pb-1 flex items-center gap-3">
           <MdPlace />  Московская область, г. Мытищи, ул. Пушкина 13
           </p>
@@ -29,3 +29,4 @@ export default function Footer() {
     </footer>
   );
 }
+
