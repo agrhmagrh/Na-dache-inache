@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className={rubik.className}>
         {children}
         <Suspense>
-          <Metrika />
+          {process.env.NODE_ENV !== "development" && <Metrika />}
         </Suspense>
       </body>
     </html>

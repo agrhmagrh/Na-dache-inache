@@ -58,7 +58,7 @@ export default function Menu({ type }: TypeMobileProps) {
                         <div
                           key={item.name}
                           className={
-                            pathname === item.href
+                            pathname === `/${item.href}`
                               ? "bg-orange text-white group relative flex  p-4"
                               : "group relative flex p-4 hover:bg-orange hover:text-white"
                           }
@@ -138,7 +138,7 @@ export default function Menu({ type }: TypeMobileProps) {
                 onClick={toggleExpandMenu}
                 className="menu-list-item flex items-center gap-1 text-sm p-4 cursor-pointer"
               >
-                Каталог{" "}
+                Каталог
                 {!expandMenu ? (
                   <BiChevronDown className="text-2xl" />
                 ) : (
@@ -149,7 +149,7 @@ export default function Menu({ type }: TypeMobileProps) {
                 solutions.map((solution, i) => {
                   return (
                     <li
-                      className={`menu-list-item p-4 pl-6 text-sm ${pathname == solution.href ? "bg-orange text-white" : "hover:bg-gray-light"}`}
+                      className={`menu-list-item p-4 pl-6 text-sm ${pathname == `/${solution.href}` ? "bg-orange text-white" : "hover:bg-gray-light"}`}
                       key={i}
                     >
                       <Link
