@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { ChangeEvent, useState } from "react";
 import { useFormik } from "formik";
+import { IMaskInput } from "react-imask";
 
 type FormPropsType = {
   btn: string;
@@ -24,16 +25,22 @@ function validate(values: FormType) {
 type Responsetype = { status: "ok" | "error" };
 export default function Form({ btn }: FormPropsType) {
   const [status, setStatus] = useState<"ok" | "error" | null>(null);
+  const [focusPhone, setFocusPhone] = useState<boolean>(false);
 
   const handleSubmit = async (values: FormType) => {
+    const { name, phone: p } = values;
+    const phone = p.replace(/[\s\(\)\-]/g, "");
+
     try {
       const f = await fetch("/api", {
         method: "POST",
-        body: JSON.stringify(values),
+        body: JSON.stringify({ name, phone }),
       });
       if (f.status == 200 || f.status == 500) {
         const r: Responsetype = await f.json();
         setStatus(r.status);
+      } else {
+        throw "error";
       }
     } catch (error) {
       setStatus("error");
@@ -88,19 +95,23 @@ export default function Form({ btn }: FormPropsType) {
         </label>
       </div>
       <div className="field relative">
-        <input
+        <IMaskInput
+          mask={"+7 (000) 000-00-00"}
           onBlur={(e) => {
+            setFocusPhone((prev) => !prev);
             formik.handleBlur(e), isDirty(e);
+          }}
+          onFocus={(e) => {
+            setFocusPhone((prev) => !prev);
           }}
           onChange={formik.handleChange}
           type="phone"
           name="phone"
           id="phone"
-          className={`peer h-full w-full absolute bg-[transparent] focus-within:outline-none text-white  border-b-2 border-solid border-gray-additional ${formik.touched.phone && formik.errors.phone && "border-red"}`}
-          autoComplete="off"
           value={formik.values.phone}
+          className={`peer h-full w-full absolute bg-[transparent] focus-within:outline-none text-white  border-b-2 border-solid border-gray-additional ${formik.touched.phone && formik.errors.phone ? "border-red" : ""}`}
+          placeholder={focusPhone ? "+7 (999) 000-01-01" : ""}
         />
-
         <label
           htmlFor="phone"
           className={`${formik.touched.phone && formik.errors.phone ? "text-red" : "text-white"} w-full block text-xl cursor-pointer h-10  transition-all peer-focus:text-sm  peer-focus:-translate-y-4 peer-focus:text-orange peer-[.is-dirty]:text-orange peer-[.is-dirty]:text-sm peer-[.is-dirty]:-translate-y-4 pointer-events-none `}
@@ -138,7 +149,7 @@ export default function Form({ btn }: FormPropsType) {
                   cy="12"
                   r="10"
                   stroke="currentColor"
-                  stroke-width="4"
+                  strokeWidth="4"
                 ></circle>
                 <path
                   className="opacity-75"
