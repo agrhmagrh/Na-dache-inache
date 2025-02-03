@@ -1,19 +1,20 @@
 "use client";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { FaTimes } from "react-icons/fa";
+
 export default function LightImage({ url }: { url: string }) {
   let [isOpen, setIsOpen] = useState(false);
 
-  function closeModal() {
+  const closeModal = useCallback(() => {
     setIsOpen(false);
-  }
+  }, []);
 
-  function openModal() {
+  const openModal = useCallback(() => {
     setIsOpen(true);
-  }
+  }, []);
   return (
     <>
       <Image
@@ -22,7 +23,7 @@ export default function LightImage({ url }: { url: string }) {
         width={310}
         height={310}
         src={url}
-        alt=""
+        alt="Image"
       />
       {isOpen &&
         createPortal(
