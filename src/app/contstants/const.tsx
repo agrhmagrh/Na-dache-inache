@@ -30,3 +30,8 @@ export const callsToAction = [
   },
   { name: "Позвонить", target: "_contain", href: linkPhone, icon: BiPhone },
 ];
+
+export const text = {
+  NotFound:
+    "Страница отсутствует, но мы уже можем предложить вам другие наши уникальные решения",
+};
