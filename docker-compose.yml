@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    container_name: app
+    container_name: nadache-inache
     build:
       context: ./
       dockerfile: Dockerfile
@@ -17,7 +17,7 @@ services:
     ports:
       - 3000:3000
     networks:
-      - my_network
+      - external
 
   # Add more containers below (nginx, postgres, etc.)
 
