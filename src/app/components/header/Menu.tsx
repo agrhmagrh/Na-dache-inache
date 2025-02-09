@@ -1,5 +1,12 @@
 "use client";
-import { Fragment, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import { BiChevronDown, BiChevronUp, BiMenu } from "react-icons/bi";
 import { Popover, Transition } from "@headlessui/react";
@@ -14,32 +21,31 @@ export default function Menu({ type }: TypeMobileProps) {
   const header = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
   }, [isOpen]);
 
-  function toggleMenu() {
-    setIsOpen((prev) => !prev);
-  }
-  function toggleExpandMenu() {
+  const toggleExpandMenu = useCallback(() => {
     setExpandMenu((prev) => !prev);
-  }
+  }, []);
 
-  return type == "desktop" ? (
-    <nav
-      className="menu p-6 col-span-4 mx-auto flex max-w-7xl items-center justify-between lg:px-8 xl:text-md md:text-sm"
-      aria-label="Global"
-    >
-      <ul className="menu-list flex items-center justify-around gap-10 cursor-pointer text-nowrap">
+  const toggleMenu = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
+
+  const menuItems = useMemo(
+    () => (
+      <>
         <Popover className="relative">
           {({ open, close }) => (
             <>
               <Popover.Button className="outline-none">
                 <li className="menu-list-item flex items-center gap-1">
-                  Каталог <BiChevronDown className={open ? 'rotate-180 transform text-2xl' : 'text-2xl'} />
+                  Каталог{" "}
+                  <BiChevronDown
+                    className={
+                      open ? "rotate-180 transform text-2xl" : "text-2xl"
+                    }
+                  />
                 </li>
               </Popover.Button>
               <Transition
@@ -104,6 +110,18 @@ export default function Menu({ type }: TypeMobileProps) {
         <li className="menu-list-item">
           <Link href="/contacts">Контакты</Link>
         </li>
+      </>
+    ),
+    [pathname]
+  );
+
+  return type == "desktop" ? (
+    <nav
+      className="menu p-6 col-span-4 mx-auto flex max-w-7xl items-center justify-between lg:px-8 xl:text-md md:text-sm"
+      aria-label="Global"
+    >
+      <ul className="menu-list flex items-center justify-around gap-10 cursor-pointer text-nowrap">
+        {menuItems}
       </ul>
     </nav>
   ) : (
