@@ -105,7 +105,13 @@ export default function Menu({ type }: TypeMobileProps) {
           )}
         </Popover>
         <li className="menu-list-item">
-          <Link href="/production">О произвостве</Link>
+          <Link href="/production">О производстве</Link>
+        </li>
+        <li className="menu-list-item">
+          <Link href="/production">Доставка и установка</Link>
+        </li>
+        <li className="menu-list-item">
+          <Link href="/production">Акции</Link>
         </li>
         <li className="menu-list-item">
           <Link href="/contacts">Контакты</Link>
@@ -183,7 +189,21 @@ export default function Menu({ type }: TypeMobileProps) {
                 className={`menu-list-item p-4 text-sm ${pathname == "/production" ? "bg-orange text-white" : "hover:bg-gray-light"}`}
               >
                 <Link href="/production" onClick={() => setIsOpen(false)}>
-                  О произвостве
+                  О производстве
+                </Link>
+              </li>
+              <li
+                className={`menu-list-item p-4 text-sm ${pathname == "/production" ? "bg-orange text-white" : "hover:bg-gray-light"}`}
+              >
+                <Link href="/production" onClick={() => setIsOpen(false)}>
+                  Доставка и установка
+                </Link>
+              </li>
+              <li
+                className={`menu-list-item p-4 text-sm ${pathname == "/production" ? "bg-orange text-white" : "hover:bg-gray-light"}`}
+              >
+                <Link href="/production" onClick={() => setIsOpen(false)}>
+                  Акции
                 </Link>
               </li>
               <li

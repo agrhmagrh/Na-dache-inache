@@ -6,6 +6,7 @@ import OffersBlock from "./HomeSections/OffersBlock";
 import ExamplesBlock from "./HomeSections/ExamplesBlock";
 import LinksBlock from "./HomeSections/LinksBlock";
 import FormBlock from "./HomeSections/FormBlock";
+import OrderBlock from "./HomeSections/OrderBlock";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <Header isMain={true}/>
       <main className="main bg-gray-light">
         <Banner></Banner>
+        <OrderBlock></OrderBlock>
         <OffersBlock></OffersBlock>
         <ExamplesBlock></ExamplesBlock>
         <LinksBlock></LinksBlock>

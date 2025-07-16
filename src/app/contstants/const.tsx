@@ -4,6 +4,9 @@ import { BsWhatsapp } from "react-icons/bs";
 
 export const linkWhatsapp: string =
   "https://api.whatsapp.com/send?phone=79856309336";
+
+export const linkTelegeram: string =
+  "https://t.me?phone=79856309336";
 export const linkPhone: string = "tel:79856309336";
 
 export const solutions = [
