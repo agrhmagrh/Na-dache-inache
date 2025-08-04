@@ -22,6 +22,7 @@ const OrderBlock: React.FC = () => {
             title: 'Поддержка 24/7',
             description: 'Мы всегда готовы помочь вам с любыми вопросами.',
         },
+        
     ];
 
     return (
