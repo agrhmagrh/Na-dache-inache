@@ -12,13 +12,11 @@ import {
   TYPE_LABEL,
 } from "@/app/contstants/pavilionsCatalog";
 
-type Props = { params: { id: string } };
-
 export function generateStaticParams() {
   return PAVILION_PRODUCTS.map((p) => ({ id: String(p.id) }));
 }
 
-export default function PavilionDetailsPage({ params }: Props) {
+export default function PavilionDetailsPage({ params }: any) {
   const product = PAVILION_PRODUCTS.find((p) => String(p.id) === params.id);
   if (!product) return notFound();
 

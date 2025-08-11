@@ -11,13 +11,11 @@ import {
   TYPE_LABEL,
 } from "@/app/contstants/pergolsCatalog";
 
-type Props = { params: { id: string } };
-
 export function generateStaticParams() {
   return PERGOLA_PRODUCTS.map((p) => ({ id: String(p.id) }));
 }
 
-export default function PergolaDetailsPage({ params }: Props) {
+export default function PergolaDetailsPage({ params }: any) {
   const product = PERGOLA_PRODUCTS.find((p) => String(p.id) === params.id);
   if (!product) return notFound();
 

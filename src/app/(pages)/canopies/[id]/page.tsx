@@ -11,13 +11,11 @@ import {
   TYPE_LABEL,
 } from "@/app/contstants/canopiesCatalog";
 
-type Props = { params: { id: string } };
-
 export function generateStaticParams() {
   return CANOPY_PRODUCTS.map((p) => ({ id: String(p.id) }));
 }
 
-export default function CanopyDetailsPage({ params }: Props) {
+export default function CanopyDetailsPage({ params }: any) {
   const product = CANOPY_PRODUCTS.find((p) => String(p.id) === params.id);
   if (!product) return notFound();
 
