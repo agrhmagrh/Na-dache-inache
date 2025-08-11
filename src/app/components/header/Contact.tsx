@@ -8,7 +8,7 @@ export default function Contact({
 }: TypeMobileProps | TypeDesktopProps) {
   return (
     <div
-      className={`flex ${type == "desktop" ? "" : "justify-end px-10 col-span-6"} gap-3 col-span-5 justify-end`}
+      className={`flex ${type == "desktop" ? "" : "justify-end px-10 col-span-5"} gap-3 col-span-3 justify-end`}
     >
       <Link href={linkWhatsapp}>
         <span className="border p-1 flex items-center text-2xl md:text-md">

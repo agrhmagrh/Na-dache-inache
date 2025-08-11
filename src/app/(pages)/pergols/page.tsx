@@ -6,6 +6,8 @@ import { TfiHummer } from "react-icons/tfi";
 import { RiCustomerServiceLine } from "react-icons/ri";
 import ButtonModal from "@/app/components/ButtonModal";
 import LightImage from "@/app/components/LightImage";
+import Link from "next/link";
+import PergolsCatalogClient from "@/app/components/PergolsCatalogClient";
 
 export const metadata: Metadata = {
   title: 'Перголы для дачи - Индивидуальные конструкции | На даче иначе',
@@ -105,11 +107,17 @@ export default function PergolasPage(): JSX.Element {
               Создание идеального укрытия от солнца и дождя
             </p>
             <ButtonModal />
+            <Link href="#catalog" className="text-orange px-5 pt-4">К выбору пергол</Link>
           </div>
         </div>
       </section>
 
-      {/* Секция проектов */}
+      {/* Каталог пергол */}
+      <section id="catalog" className="bg-gray-light relative pb-20" aria-label="Каталог пергол">
+        <PergolsCatalogClient />
+      </section>
+
+      {/* Секция проектов (сохраняем ниже каталога) */}
       <section className="offers-block bg-gray-light relative pb-20" aria-label="Наши проекты">
         <div className="content-offers max-w-screen-xl m-auto z-10 relative">
           <div className="title flex items-center justify-center md:p-20 p-10">

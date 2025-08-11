@@ -1,167 +1,165 @@
+"use client";
+import { useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import FormBlock from "../../HomeSections/FormBlock";
-import { CgIfDesign } from "react-icons/cg";
-import { TfiHummer } from "react-icons/tfi";
-import { RiCustomerServiceLine } from "react-icons/ri";
-import ButtonModal from "@/app/components/ButtonModal";
-import LightImage from "@/app/components/LightImage";
-import CanopyAdvantage from "@/app/components/CanopyAdvantage";
-import CanopyMaterialCard from "@/app/components/CanopyMaterialCard";
-import AdvantageCard from "@/app/components/AdvantageCard";
-import { 
-  CANOPIES_IMAGES, 
-  CANOPY_MATERIALS, 
-  COMPANY_ADVANTAGES,
-  type CanopyAdvantage as CanopyAdvantageType 
-} from "@/app/contstants/canopies";
+import PopularCategories from "../../HomeSections/PopularCategories";
+import {
+  CANOPY_PRODUCTS as PRODUCTS,
+  SHAPE_LABEL,
+  TYPE_LABEL,
+  type CanopyShape,
+  type CanopyType,
+} from "@/app/contstants/canopiesCatalog";
 
-// Данные о преимуществах навесов
-const CANOPY_ADVANTAGES: CanopyAdvantageType[] = [
-  {
-    id: 1,
-    icon: CgIfDesign,
-    title: "Защита от погоды",
-    description: "Навес обеспечивает надежную защиту от солнца, дождя и других погодных условий, позволяя вам наслаждаться отдыхом на свежем воздухе в любую погоду."
-  },
-  {
-    id: 2,
-    icon: RiCustomerServiceLine,
-    title: "Расширение пространства",
-    description: "Навес создает дополнительное пространство на вашем участке, которое можно использовать для отдыха, барбекю, хранения садовых инструментов и других нужд."
-  },
-  {
-    id: 3,
-    icon: TfiHummer,
-    title: "Индивидуальный дизайн",
-    description: "Заказывая навес по индивидуальному проекту, вы можете выбрать дизайн, размер, форму и другие детали, которые отражают ваш стиль и соответствуют архитектуре вашего дома и участка."
-  }
-];
+interface FiltersState {
+  shapes: Set<CanopyShape>;
+  kinds: Set<CanopyType>;
+}
 
-export const metadata = {
-  title: 'Индивидуальные навесы для дачи | Защищенное пространство под ключ',
-  description: 'Создаем качественные навесы для дачи из дерева, металла и ткани. Индивидуальный дизайн, защита от погоды и расширение пространства.',
-  keywords: 'навесы для дачи, индивидуальные навесы, деревянные навесы, металлические навесы, тканевые навесы',
-};
+export default function CanopiesCatalogPage() {
+  const [filters, setFilters] = useState<FiltersState>({
+    shapes: new Set<CanopyShape>(),
+    kinds: new Set<CanopyType>(),
+  });
 
-export default function Canopies() {
+  const filtered = useMemo(() => {
+    return PRODUCTS.filter((p) => {
+      const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape);
+      const byKind = filters.kinds.size === 0 || filters.kinds.has(p.kind);
+      return byShape && byKind;
+    });
+  }, [filters]);
+
+  const toggleShape = (shape: CanopyShape) => {
+    setFilters((prev) => {
+      const next = new Set(prev.shapes);
+      next.has(shape) ? next.delete(shape) : next.add(shape);
+      return { ...prev, shapes: next };
+    });
+  };
+
+  const toggleKind = (kind: CanopyType) => {
+    setFilters((prev) => {
+      const next = new Set(prev.kinds);
+      next.has(kind) ? next.delete(kind) : next.add(kind);
+      return { ...prev, kinds: next };
+    });
+  };
+
+  const resetFilters = () =>
+    setFilters({ shapes: new Set<CanopyShape>(), kinds: new Set<CanopyType>() });
+
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gray-dark min-h-[500px] md:h-[700px] bg-[url(/img/navesa-6.jpg)] bg-top bg-no-repeat bg-cover relative">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="max-w-screen-xl m-auto flex items-center justify-end h-full relative z-10">
-          <div className="w-full xl:w-[500px] xl:h-[350px] bg-white p-5 flex flex-col shadow-xl rounded-lg">
-            <h1 className="md:text-4xl text-xl p-5 pb-2 font-bold">
-              Индивидуальные навесы для дачи
-            </h1>
-            <p className="md:text-2xl p-5 pt-2 pb-10 text-gray-700">
-              Создание защищенного пространства под ключ
-            </p>
-            <ButtonModal />
+    <main className="bg-gray-light">
+      {/* Hero banner */}
+      <section className="bg-[url('/img/hoz-banner.jpg')] bg-cover bg-center">
+        <div className="bg-black/40">
+          <div className="max-w-screen-xl m-auto px-6 py-12 text-white">
+            <h1 className="text-2xl md:text-4xl font-bold mb-3">Каталог навесов</h1>
+            <p className="md:text-xl mb-6">Найдите подходящий навес под вашу задачу</p>
+            <a
+              href="#catalog"
+              className="inline-block bg-orange text-white px-6 py-3 rounded-sm hover:opacity-90"
+            >
+              К выбору навеса
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section className="offers-block bg-gray-light relative pb-20">
-        <div className="content-offers max-w-screen-xl m-auto z-10 relative">
-          <header className="title flex items-center justify-center md:p-20 p-10">
-            <h2 className="relative font-bold md:text-4xl text-2xl md:leading-9 z-10 md:h-[40px] bg-gray-light">
-              Наши проекты
-            </h2>
-            <div className="title-border"></div>
-          </header>
-          
-          <div className="offers-cards-wrapper bg-white grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-2 p-5 md:p-10 xl:px-40 justify-center rounded-lg shadow-lg">
-            {CANOPIES_IMAGES.map((canopy) => (
-              <div key={canopy.id} className="col-span-1 m-auto h-full">
-                <LightImage url={canopy.url} alt={canopy.alt} />
+      {/* Catalog with filters */}
+      <section id="catalog" className="max-w-screen-xl m-auto px-6 py-10 grid grid-cols-12 gap-6">
+        {/* Sidebar */}
+        <aside className="col-span-12 md:col-span-3 order-2 md:order-1">
+          <div className="bg-white border border-gray-additional rounded p-4 sticky top-4">
+            <div className="font-semibold mb-4">Фильтр</div>
+
+            <div className="mb-5">
+              <div className="text-sm text-gray-600 mb-2">Назначение</div>
+              <div className="flex flex-col gap-2">
+                {(Object.keys(TYPE_LABEL) as Array<keyof typeof TYPE_LABEL>).map((k) => (
+                  <label key={k} className="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="accent-orange"
+                      checked={filters.kinds.has(k)}
+                      onChange={() => toggleKind(k)}
+                    />
+                    <span>{TYPE_LABEL[k]}</span>
+                  </label>
+                ))}
               </div>
-            ))}
-          </div>
-          
-          <div className="offers-cards-info bg-gray-dark text-white text-xl p-12 pt-8 rounded-lg">
-            <h3 className="py-3 text-2xl text-orange font-semibold">
-              Преимущества выбора индивидуальных навесов
-            </h3>
-            <p className="text-lg text-gray-additional leading-relaxed">
-              Выбор индивидуального навеса для вашей дачи предоставляет множество преимуществ, делая ваш отдых более комфортным и защищенным:
-            </p>
-            <div className="xl:flex pt-4 gap-5">
-              {CANOPY_ADVANTAGES.map((advantage) => (
-                <CanopyAdvantage
-                  key={advantage.id}
-                  icon={advantage.icon}
-                  title={advantage.title}
-                  description={advantage.description}
-                />
-              ))}
+            </div>
+
+            <div className="mb-5">
+              <div className="text-sm text-gray-600 mb-2">Форма</div>
+              <div className="flex flex-col gap-2">
+                {(Object.keys(SHAPE_LABEL) as Array<keyof typeof SHAPE_LABEL>).map((s) => (
+                  <label key={s} className="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="accent-orange"
+                      checked={filters.shapes.has(s)}
+                      onChange={() => toggleShape(s)}
+                    />
+                    <span>{SHAPE_LABEL[s]}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="border border-gray-additional text-gray-700 px-4 py-2 w-full hover:bg-gray-50"
+            >
+              Сбросить фильтр
+            </button>
+
+            <div className="mt-6 flex items-center gap-3 p-3 border border-gray-additional rounded">
+              <div className="relative w-12 h-12 shrink-0 rounded-full overflow-hidden">
+                <Image src="/img/handsome.jpg" alt="Менеджер" fill className="object-cover" />
+              </div>
+              <div className="text-sm">
+                <div className="font-semibold">Александра</div>
+                <div className="text-gray-600">Бесплатно помогу с выбором 24/7</div>
+                <a href="tel:+74999386359" className="text-orange">+7 (499) 938-63-59</a>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="middle-block absolute m-auto w-full h-[40%] z-0 top-1/3 bg-gray-dark-block"></div>
-      </section>
+        </aside>
 
-      {/* Materials Section */}
-      <section className="bg-gray-light">
-        <div className="max-w-screen-xl m-auto flex flex-col gap-10 xl:p-10 xl:py-20 p-5">
-          <header className="title flex items-center justify-center md:p-20 pb-5">
-            <h2 className="relative font-bold md:text-4xl text-2xl md:leading-9 z-10 md:h-[40px] bg-gray-light">
-              Разнообразие выбора и материалы
-            </h2>
-            <div className="title-border"></div>
-          </header>
-          
-          <p className="text-lg text-center">
-            Выбор индивидуального навеса для дачи предоставляет широкие возможности для создания уникального и функционального пространства. Вот некоторые из популярных вариантов:
-          </p>
-          
-          {CANOPY_MATERIALS.map((material) => (
-            <CanopyMaterialCard
-              key={material.id}
-              name={material.name}
-              description={material.description}
-              image={material.image}
-              imageAlt={material.imageAlt}
-            />
-          ))}
-        </div>
-      </section>
+        {/* Products grid */}
+        <div className="col-span-12 md:col-span-9 order-1 md:order-2">
+          <h2 className="text-2xl font-bold mb-6">Навесы</h2>
 
-      {/* Company Advantages Section */}
-      <section className="bg-gray-dark-block p-5">
-        <div className="m-auto max-w-screen-xl py-20">
-          <header className="examples-block-title text-white font-bold text-3xl relative xl:px-0 px-5">
-            <h2 className="bg-gray-dark-block block mt-4 py-2 relative z-10">
-              Почему следует выбрать нашу компанию
-            </h2>
-            <div className="absolute border w-[200px] h-[70px] border-gray-additional z-0 top-[-10px]"></div>
-          </header>
-          
-          <p className="text-gray-additional text-lg py-10 px-5 xl:px-0">
-            Выбирая нашу компанию для создания индивидуального навеса для вашей дачи, вы получаете:
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-5">
-            {COMPANY_ADVANTAGES.map((advantage, index) => (
-              <AdvantageCard
-                key={advantage.id}
-                title={advantage.title}
-                description={advantage.description}
-                image={advantage.image}
-                imagePosition={advantage.imagePosition}
-                isReversed={index % 2 === 0}
-              />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((p) => (
+              <article key={p.id} className="bg-white shadow rounded overflow-hidden">
+                <div className="h-44 relative">
+                  <Image src={p.image} alt={p.title} fill className="object-cover" />
+                </div>
+
+                <div className="bg-gray-product text-white p-4">
+                  <div className="font-semibold">{p.price.toLocaleString("ru-RU")} руб.</div>
+                  <div className="text-sm text-gray-200">{p.title}</div>
+                  <div className="mt-3 text-xs text-gray-200">
+                    Форма: {SHAPE_LABEL[p.shape]} • Назначение: {TYPE_LABEL[p.kind]}
+                  </div>
+                  <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
+                  <Link href={`/canopies/${p.id}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
+                    Перейти
+                  </Link>
+                </div>
+              </article>
             ))}
           </div>
-          
-          <p className="text-lg pt-10 text-white leading-relaxed">
-            Выбирая нас, вы выбираете надежного партнера, который поможет воплотить в жизнь ваши мечты о комфортном и стильном навесе для вашей дачи.
-          </p>
         </div>
       </section>
-      
+
       <FormBlock />
+      <PopularCategories />
     </main>
   );
 }
