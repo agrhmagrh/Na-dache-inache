@@ -5,6 +5,7 @@ import FormBlock from "@/app/HomeSections/FormBlock";
 import PopularCategories from "@/app/HomeSections/PopularCategories";
 import ProductTabs from "@/app/components/ProductTabs";
 import PavilionGallery from "@/app/components/PavilionGallery";
+import Breadcrumbs from "@/app/components/Breadcrumbs";
 import {
   CANOPY_PRODUCTS,
   SHAPE_LABEL,
@@ -15,8 +16,9 @@ export function generateStaticParams() {
   return CANOPY_PRODUCTS.map((p) => ({ id: String(p.id) }));
 }
 
-export default function CanopyDetailsPage({ params }: any) {
-  const product = CANOPY_PRODUCTS.find((p) => String(p.id) === params.id);
+export default async function CanopyDetailsPage({ params }: any) {
+  const { id } = await params;
+  const product = CANOPY_PRODUCTS.find((p) => String(p.id) === id);
   if (!product) return notFound();
 
   const gallery = [product.image, "/img/navesa-1.jpg", "/img/navesa-2.jpg"]; // простая заглушка
@@ -36,6 +38,12 @@ export default function CanopyDetailsPage({ params }: any) {
 
         {/* Content */}
         <div className="col-span-12 md:col-span-9">
+          <Breadcrumbs
+            items={[
+              { label: "Навесы", href: "/canopies" },
+              { label: `${SHAPE_LABEL[product.shape]} навес ${product.title.toUpperCase()}` },
+            ]}
+          />
           <div className="grid grid-cols-12 gap-4">
             {/* Gallery */}
             <div className="col-span-12 lg:col-span-7">

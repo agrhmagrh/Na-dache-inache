@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import FormBlock from "../../HomeSections/FormBlock";
 import PopularCategories from "../../HomeSections/PopularCategories";
+import PavilionsSeo from "../../components/PavilionsSeo";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import {
   PAVILION_PRODUCTS as PRODUCTS,
   SHAPE_LABEL,
@@ -53,8 +55,9 @@ export default function PavilionsCatalogPage() {
 
   return (
     <main className="bg-gray-light">
+      <PavilionsSeo />
       {/* Hero banner */}
-      <section className="bg-[url('/img/pavi-banner.jpg')] bg-cover bg-center">
+      <section className="bg-[url('/img/pavi-banner.jpg')] bg-cover bg-center" aria-label="Главный баннер">
         <div className="bg-black/40">
           <div className="max-w-screen-xl m-auto px-6 py-12 text-white">
             <h1 className="text-2xl md:text-4xl font-bold mb-3">
@@ -74,7 +77,7 @@ export default function PavilionsCatalogPage() {
       </section>
 
       {/* Catalog with filters */}
-      <section id="catalog" className="max-w-screen-xl m-auto px-6 py-10 grid grid-cols-12 gap-6">
+      <section id="catalog" className="max-w-screen-xl m-auto px-6 py-10 grid grid-cols-12 gap-6" aria-label="Каталог беседок">
         {/* Sidebar */}
         <aside className="col-span-12 md:col-span-3 order-2 md:order-1">
           <div className="bg-white border border-gray-additional rounded p-4 sticky top-4">
@@ -137,11 +140,12 @@ export default function PavilionsCatalogPage() {
 
         {/* Products grid */}
         <div className="col-span-12 md:col-span-9 order-1 md:order-2">
+          <Breadcrumbs items={[{ label: "Беседки" }]} />
           <h2 className="text-2xl font-bold mb-6">Каталог беседок</h2>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список беседок">
             {filtered.map((p) => (
-              <article key={p.id} className="bg-white shadow rounded overflow-hidden">
+              <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
                 <div className="h-44 relative">
                   <Image
                     src={p.image}

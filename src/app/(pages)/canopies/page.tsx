@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import FormBlock from "../../HomeSections/FormBlock";
 import PopularCategories from "../../HomeSections/PopularCategories";
+import CanopiesSeo from "../../components/CanopiesSeo";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import {
   CANOPY_PRODUCTS as PRODUCTS,
   SHAPE_LABEL,
@@ -52,12 +54,17 @@ export default function CanopiesCatalogPage() {
 
   return (
     <main className="bg-gray-light">
+      <CanopiesSeo />
       {/* Hero banner */}
-      <section className="bg-[url('/img/hoz-banner.jpg')] bg-cover bg-center">
+      <section className="bg-[url('/img/hoz-banner.jpg')] bg-cover bg-center" aria-label="Главный баннер">
         <div className="bg-black/40">
           <div className="max-w-screen-xl m-auto px-6 py-12 text-white">
-            <h1 className="text-2xl md:text-4xl font-bold mb-3">Каталог навесов</h1>
-            <p className="md:text-xl mb-6">Найдите подходящий навес под вашу задачу</p>
+            <h1 className="text-2xl md:text-4xl font-bold mb-3">
+              Оплатите зимой – получите навес весной без очереди
+            </h1>
+            <p className="md:text-xl mb-6">
+              Закажите сейчас и встречайте весну с готовым навесом
+            </p>
             <a
               href="#catalog"
               className="inline-block bg-orange text-white px-6 py-3 rounded-sm hover:opacity-90"
@@ -69,7 +76,7 @@ export default function CanopiesCatalogPage() {
       </section>
 
       {/* Catalog with filters */}
-      <section id="catalog" className="max-w-screen-xl m-auto px-6 py-10 grid grid-cols-12 gap-6">
+      <section id="catalog" className="max-w-screen-xl m-auto px-6 py-10 grid grid-cols-12 gap-6" aria-label="Каталог навесов">
         {/* Sidebar */}
         <aside className="col-span-12 md:col-span-3 order-2 md:order-1">
           <div className="bg-white border border-gray-additional rounded p-4 sticky top-4">
@@ -132,11 +139,12 @@ export default function CanopiesCatalogPage() {
 
         {/* Products grid */}
         <div className="col-span-12 md:col-span-9 order-1 md:order-2">
-          <h2 className="text-2xl font-bold mb-6">Навесы</h2>
+          <Breadcrumbs items={[{ label: "Навесы" }]} />
+          <h2 className="text-2xl font-bold mb-6">Каталог навесов</h2>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список навесов">
             {filtered.map((p) => (
-              <article key={p.id} className="bg-white shadow rounded overflow-hidden">
+              <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
                 <div className="h-44 relative">
                   <Image src={p.image} alt={p.title} fill className="object-cover" />
                 </div>

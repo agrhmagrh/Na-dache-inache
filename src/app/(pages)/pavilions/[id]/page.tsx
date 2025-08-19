@@ -6,6 +6,7 @@ import PopularCategories from "@/app/HomeSections/PopularCategories";
 import RecentlyViewed from "@/app/components/RecentlyViewed";
 import PavilionGallery from "@/app/components/PavilionGallery";
 import ProductTabs from "@/app/components/ProductTabs";
+import Breadcrumbs from "@/app/components/Breadcrumbs";
 import {
   PAVILION_PRODUCTS,
   SHAPE_LABEL,
@@ -16,8 +17,9 @@ export function generateStaticParams() {
   return PAVILION_PRODUCTS.map((p) => ({ id: String(p.id) }));
 }
 
-export default function PavilionDetailsPage({ params }: any) {
-  const product = PAVILION_PRODUCTS.find((p) => String(p.id) === params.id);
+export default async function PavilionDetailsPage({ params }: any) {
+  const { id } = await params;
+  const product = PAVILION_PRODUCTS.find((p) => String(p.id) === id);
   if (!product) return notFound();
 
   const gallery = [product.image, "/img/pavilions/1.jpg", "/img/pavilions/2.jpg"]; // простая заглушка из доступных изображений
@@ -37,6 +39,12 @@ export default function PavilionDetailsPage({ params }: any) {
 
         {/* Content */}
         <div className="col-span-12 md:col-span-9">
+          <Breadcrumbs
+            items={[
+              { label: "Беседки", href: "/pavilions" },
+              { label: `${SHAPE_LABEL[product.shape]} беседка ${product.title.toUpperCase()}` },
+            ]}
+          />
           <div className="grid grid-cols-12 gap-4">
             {/* Gallery */}
             <div className="col-span-12 lg:col-span-7">
