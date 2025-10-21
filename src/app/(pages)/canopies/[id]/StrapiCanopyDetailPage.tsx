@@ -4,7 +4,7 @@ import React from 'react';
 import { useProductBySlug } from '@/hooks/useProducts';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { apiUtils } from '@/lib/api';
+import { apiUtils } from '@/app/api/lib/api';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 
 export const StrapiCanopyDetailPage: React.FC = () => {

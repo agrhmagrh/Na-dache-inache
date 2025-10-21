@@ -4,29 +4,67 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FormattedStrapiProduct } from '@/types/strapi';
-import { apiUtils } from '@/lib/api';
+import { apiUtils } from '@/app/api/lib/api';
+import { StrapiImageUtils, StrapiImageData } from './StrapiImageUtils';
 
 interface StrapiCardProps {
   product: FormattedStrapiProduct;
   categorySlug: string;
+  additionalImages?: StrapiImageData[]; // Images from files API
 }
 
-export const StrapiCard: React.FC<StrapiCardProps> = ({ product, categorySlug }) => {
-  const imageUrl = apiUtils.getImageUrl(product.image?.url);
+export const StrapiCard: React.FC<StrapiCardProps> = ({ 
+  product, 
+  categorySlug, 
+  additionalImages = [] 
+}) => {
+  // Get product images using the utility
+  const productImages = StrapiImageUtils.getProductImages(product, additionalImages);
+  const mainImage = productImages[0];
+  const imageUrl = mainImage ? StrapiImageUtils.getImageUrl(mainImage, 'medium') : null;
   const formattedPrice = apiUtils.formatPrice(product.price);
+
+  // Extract text from rich text description
+  const getDescriptionText = (description: any[]) => {
+    if (!description || !Array.isArray(description)) return '';
+    
+    return description
+      .map(block => {
+        if (block.type === 'paragraph' && block.children) {
+          return block.children
+            .filter((child: any) => child.type === 'text')
+            .map((child: any) => child.text)
+            .join('');
+        }
+        return '';
+      })
+      .join(' ')
+      .substring(0, 150) + '...';
+  };
 
   return (
     <div className="group relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <Link href={`/${categorySlug}/${product.slug}`}>
-        <div className="aspect-w-16 aspect-h-12 bg-gray-200">
-          {imageUrl && (
+        <div className="aspect-w-16 aspect-h-12 bg-gray-200 relative">
+          {imageUrl ? (
             <Image
               src={imageUrl}
-              alt={product.image?.alternativeText || product.title}
+              alt={mainImage?.alternativeText || product.title}
               width={400}
               height={300}
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
+          ) : (
+            <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
+              <span className="text-gray-500 text-sm">Нет изображения</span>
+            </div>
+          )}
+          
+          {/* Featured badge */}
+          {product.isFeatured && (
+            <div className="absolute top-2 right-2 bg-orange text-white text-xs px-2 py-1 rounded-full">
+              Популярное
+            </div>
           )}
         </div>
         
@@ -41,9 +79,16 @@ export const StrapiCard: React.FC<StrapiCardProps> = ({ product, categorySlug })
             </p>
           )}
           
-          <div className="flex items-center justify-between">
+          {/* Show description text if no short description */}
+          {!product.shortDescription && product.description && (
+            <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+              {getDescriptionText(product.description)}
+            </p>
+          )}
+          
+          <div className="flex items-center justify-between mb-3">
             <div className="text-sm text-gray-500">
-              <span className="block">{product.size}</span>
+              <span className="block font-medium">{product.size}</span>
               <span className="block">{product.areaM2} м²</span>
             </div>
             
@@ -52,6 +97,12 @@ export const StrapiCard: React.FC<StrapiCardProps> = ({ product, categorySlug })
                 {formattedPrice}
               </div>
             </div>
+          </div>
+          
+          {/* Product type and shape */}
+          <div className="flex items-center justify-between text-xs text-gray-500">
+            <span className="capitalize">{product.type}</span>
+            <span className="capitalize">{product.shape}</span>
           </div>
           
           {product.material && (

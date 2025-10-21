@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { FormattedStrapiCompanyAdvantage } from '@/types/strapi';
-import { apiUtils } from '@/lib/api';
+import { apiUtils } from '@/app/api/lib/api';
 
 interface StrapiAdvantageCardProps {
   advantage: FormattedStrapiCompanyAdvantage;

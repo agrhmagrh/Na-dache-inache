@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { companyAdvantagesApi, FormattedStrapiCompanyAdvantage } from '@/lib/api';
+import { companyAdvantagesApi } from '@/app/api/lib/api';
+import { FormattedStrapiCompanyAdvantage } from '@/types/strapi';
 
 export const useCompanyAdvantages = () => {
   const [advantages, setAdvantages] = useState<FormattedStrapiCompanyAdvantage[]>([]);

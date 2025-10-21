@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { productsApi, FormattedStrapiProduct } from '@/lib/api';
+import { productsApi } from '@/app/api/lib/api';
+import { FormattedStrapiProduct } from '@/types/strapi';
 
 export const useProducts = (categorySlug?: string) => {
   const [products, setProducts] = useState<FormattedStrapiProduct[]>([]);
@@ -33,7 +34,7 @@ export const useProducts = (categorySlug?: string) => {
   return { products, loading, error };
 };
 
-export const useProduct = (id: number) => {
+export const useProduct = (id: string) => {
   const [product, setProduct] = useState<FormattedStrapiProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -100,7 +101,7 @@ export const useFeaturedProducts = () => {
         setLoading(true);
         setError(null);
         
-        const data = await productsApi.getFeatured();
+        const data = await productsApi.getAll({ filters: { isFeatured: { $eq: true } } });
         setProducts(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Ошибка загрузки рекомендуемых товаров');

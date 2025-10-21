@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { siteSettingsApi, FormattedStrapiSiteSettings } from '@/lib/api';
+import { siteSettingsApi } from '@/app/api/lib/api';
+import { FormattedStrapiSiteSettings } from '@/types/strapi';
 
 export const useSiteSettings = () => {
   const [settings, setSettings] = useState<FormattedStrapiSiteSettings | null>(null);

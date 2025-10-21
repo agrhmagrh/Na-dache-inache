@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FormBlock from "../../HomeSections/FormBlock";
@@ -7,12 +7,16 @@ import PopularCategories from "../../HomeSections/PopularCategories";
 import PavilionsSeo from "../../components/PavilionsSeo";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import {
+  PavilionProductItem,
   PAVILION_PRODUCTS as PRODUCTS,
   SHAPE_LABEL,
   TYPE_LABEL,
   type PavilionShape,
   type PavilionType,
 } from "@/app/contstants/pavilionsCatalog";
+import { useProducts } from "@/hooks";
+import AdditionalImagesDemo from "@/components/AdditionalImagesDemo";
+import { apiUtils } from "@/app/api/lib/api";
 
 interface FiltersState {
   shapes: Set<PavilionShape>;
@@ -20,19 +24,32 @@ interface FiltersState {
 }
 
 export default function PavilionsCatalogPage() {
+  const pavilionsProducts = useProducts('pavilions');
   const [filters, setFilters] = useState<FiltersState>({
     shapes: new Set<PavilionShape>(),
     kinds: new Set<PavilionType>(),
   });
 
-  const filtered = useMemo(() => {
-    return PRODUCTS.filter((p) => {
-      const byShape =
-        filters.shapes.size === 0 || filters.shapes.has(p.shape);
-      const byKind = filters.kinds.size === 0 || filters.kinds.has(p.kind);
-      return byShape && byKind;
-    });
-  }, [filters]);
+  // Debug: Log additional images for testing
+  React.useEffect(() => {
+    if (pavilionsProducts.products && pavilionsProducts.products.length > 0) {
+      console.log('Products with additional images:', pavilionsProducts.products.map(p => ({
+        id: p.id,
+        title: p.title,
+        additionalImages: p.additionalImages?.length || 0
+      })));
+    }
+  }, [pavilionsProducts.products]);
+  // Use only filtered from API, remove double filtered logic in useMemo
+  const filtered = !pavilionsProducts.products || pavilionsProducts.products.length === 0
+    ? []
+    : pavilionsProducts.products.filter((p) => {
+        // p.shape and p.kind may be string in API object, cast to PavilionShape and PavilionType
+        const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape as PavilionShape);
+        const byKind = filters.kinds.size === 0 || filters.kinds.has(p.type as PavilionType);
+        return byShape && byKind;
+      });
+
 
   const toggleShape = (shape: PavilionShape) => {
     setFilters((prev) => {
@@ -148,24 +165,31 @@ export default function PavilionsCatalogPage() {
               <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
                 <div className="h-44 relative">
                   <Image
-                    src={p.image}
-                    alt={p.title}
+                    src={apiUtils.getImageUrl(p.image.url)}
+                    alt={p.image.alternativeText || p.title}
                     fill
                     className="object-cover"
                   />
+                  {/* Show additional images count if available */}
+                  {p.additionalImages && p.additionalImages.length > 0 && (
+                    <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                      +{p.additionalImages.length} фото
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-gray-product text-white p-4">
                   <div className="font-semibold">{p.price.toLocaleString("ru-RU")} руб.</div>
                   <div className="text-sm text-gray-200">{p.title}</div>
                   <div className="mt-3 text-xs text-gray-200">
-                    Внешний вид: {SHAPE_LABEL[p.shape]} • Вид: {TYPE_LABEL[p.kind]}
+                    Внешний вид: {SHAPE_LABEL[p.shape as PavilionShape]} • Вид: {TYPE_LABEL[p.type as PavilionType]}
                   </div>
                   <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
                   <Link href={`/pavilions/${p.id}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
                     Перейти
                   </Link>
                 </div>
+                <AdditionalImagesDemo product={p} />
               </article>
             ))}
           </div>

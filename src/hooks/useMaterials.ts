@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { materialsApi, FormattedStrapiMaterial } from '@/lib/api';
+import { materialsApi } from '@/app/api/lib/api';
+import { FormattedStrapiMaterial } from '@/types/strapi';
 
 export const useMaterials = () => {
   const [materials, setMaterials] = useState<FormattedStrapiMaterial[]>([]);

@@ -13,7 +13,7 @@
     "@apollo/client": "^3.12.9",
     "@headlessui/react": "^2.2.4",
     "@next/env": "^14.2.3",
-    "@strapi/sdk-js": "^1.0.0",
+    "@strapi/client": "^1.5.0",
     "formik": "^2.4.6",
     "graphql": "^16.10.0",
     "next": "^15.4.1",

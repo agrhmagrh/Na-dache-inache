@@ -51,14 +51,15 @@ export interface StrapiImageFormat {
 // Product types
 export interface StrapiProduct {
   id: number;
+  documentId?: string;
   title: string;
   slug: string;
   price: number;
-  description?: string;
+  description?: any[]; // Rich text content from Strapi
   shortDescription?: string;
-  image: StrapiImage;
+  image?: StrapiImage;
   gallery?: StrapiImage[];
-  category: StrapiCategory;
+  category?: StrapiCategory;
   material?: StrapiMaterial;
   shape: string;
   type: string;
@@ -142,12 +143,41 @@ export interface StrapiSiteSettings {
   publishedAt: string;
 }
 
+// File from Strapi files API
+export interface StrapiFile {
+  id: number;
+  name: string;
+  alternativeText?: string;
+  caption?: string;
+  width: number;
+  height: number;
+  formats?: {
+    thumbnail?: StrapiImageFormat;
+    small?: StrapiImageFormat;
+    medium?: StrapiImageFormat;
+    large?: StrapiImageFormat;
+  };
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl?: string;
+  provider: string;
+  provider_metadata?: any;
+  documentId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Formatted types (after processing with formatStrapiResponse)
 export type FormattedStrapiProduct = Omit<StrapiProduct, 'image' | 'gallery' | 'category' | 'material'> & {
   image: StrapiImage;
   gallery?: StrapiImage[];
   category: StrapiCategory;
   material?: StrapiMaterial;
+  // Additional images from files API
+  additionalImages?: StrapiFile[];
 };
 
 export type FormattedStrapiCategory = StrapiCategory;

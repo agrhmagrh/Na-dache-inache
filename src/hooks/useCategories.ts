@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { categoriesApi, FormattedStrapiCategory } from '@/lib/api';
+import { categoriesApi } from '@/app/api/lib/api';
+import { FormattedStrapiCategory } from '@/types/strapi';
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<FormattedStrapiCategory[]>([]);
