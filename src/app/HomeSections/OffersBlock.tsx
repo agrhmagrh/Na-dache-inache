@@ -1,6 +1,6 @@
 import { IOffersCard, ICardsWrapper } from "@/interfaces/ICard";
 import Card from "../components/Card";
-import { solutions } from "../contstants/const";
+import { solutions, text } from "../contstants/const";
 const [b, n, p, h] = solutions;
 
 const cardsData: IOffersCard[] = [
@@ -64,15 +64,7 @@ export default function OffersBlock({ title }: any) {
         </div>
         <div className="offers-cards-info bg-gray-dark text-white md:text-xl p-12 pt-8">
           <p>
-            Наша компания специализируемся на строительстве современных
-            конструкций из дерева, таких как беседки, навесы, перголы и т.д. Мы
-            знаем, что такое индивидуальный подход к клиенту! Мы используем
-            только высококачественные материалы и технологии, чем и обеспечиваем
-            долговечность изготовленных конструкций. Наша команда профессионалов
-            готова помочь вам в каждом шаге на пути к созданию своей собственной
-            беседки или навеса и обеспечить высокое качество услуг. Наша цель –
-            сделать процесс строительства максимально простым и комфортным, что
-            позволит наслаждаться новой постройкой в течение долгого времени!
+              {text.Description}
           </p>
         </div>
       </div>

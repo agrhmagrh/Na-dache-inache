@@ -24,20 +24,20 @@ export default function Header({ isMain }: TypeDesktopProps | TypeMobileProps) {
       isShowMobileMenu ? (
         <MobileHeader type="mobile" />
       ) : (
-        <DesktopHeader isMain={isMain} type="desktop" />
+        <DesktopHeader type="desktop" />
       ),
-    [isShowMobileMenu, isMain]
+    [isShowMobileMenu]
   );
 
   return HeaderComponent;
 }
 
-function DesktopHeader({ type, isMain }: TypeDesktopProps) {
+function DesktopHeader({ type }: TypeDesktopProps) {
   return (
     <header className="header bg-white grid grid-cols-12 items-center max-w-screen-2xl m-auto top-0 z-20">
       <Logo />
       <Menu type={type}></Menu>
-      <Contact type={type} isMain={isMain}></Contact>
+      <Contact type={type}></Contact>
     </header>
   );
 }

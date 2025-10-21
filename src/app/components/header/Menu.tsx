@@ -9,7 +9,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { BiChevronDown, BiChevronUp, BiMenu } from "react-icons/bi";
-import { Popover, Transition } from "@headlessui/react";
+import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
 import { solutions, callsToAction } from "@/app/contstants/const";
 import { usePathname } from "next/navigation";
 import { TypeMobileProps } from "@/types";
@@ -38,7 +38,7 @@ export default function Menu({ type }: TypeMobileProps) {
         <Popover className="relative">
           {({ open, close }) => (
             <>
-              <Popover.Button className="outline-none">
+              <PopoverButton className="outline-none">
                 <li className="menu-list-item flex items-center gap-1">
                   Каталог{" "}
                   <BiChevronDown
@@ -47,9 +47,9 @@ export default function Menu({ type }: TypeMobileProps) {
                     }
                   />
                 </li>
-              </Popover.Button>
+              </PopoverButton>
               <Transition
-                as={Fragment}
+                as="div"
                 enter="transition ease-out duration-200"
                 enterFrom="opacity-0 translate-y-1"
                 enterTo="opacity-100 translate-y-0"
@@ -57,7 +57,15 @@ export default function Menu({ type }: TypeMobileProps) {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute left-[200px] z-100 mt-5 flex w-screen max-w-max -translate-x-1/2  z-20">
+                {/* Click-outside overlay to close popover (avoid deprecated Overlay API) */}
+                {open && (
+                  <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => close()}
+                    aria-hidden="true"
+                  />
+                )}
+                <PopoverPanel className="absolute left-[200px] z-100 mt-5 flex w-screen max-w-max -translate-x-1/2  z-20">
                   <div className="w-screen max-w-md flex-auto overflow-hidden bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-additional">
                     <div className="flex flex-col gap-2">
                       {solutions.map((item) => (
@@ -70,8 +78,8 @@ export default function Menu({ type }: TypeMobileProps) {
                           }
                         >
                           <div>
-                            <Link
-                              href={item.href}
+                              <Link
+                              href={`/${item.href}`}
                               className={"font-semibold"}
                               onClick={() => close()}
                             >
@@ -99,13 +107,19 @@ export default function Menu({ type }: TypeMobileProps) {
                       ))}
                     </div>
                   </div>
-                </Popover.Panel>
+                </PopoverPanel>
               </Transition>
             </>
           )}
         </Popover>
         <li className="menu-list-item">
-          <Link href="/production">О произвостве</Link>
+          <Link href="/production">О производстве</Link>
+        </li>
+        <li className="menu-list-item">
+          <Link href="/delivery">Доставка и установка</Link>
+        </li>
+        <li className="menu-list-item">
+          <Link href="/production">Акции</Link>
         </li>
         <li className="menu-list-item">
           <Link href="/contacts">Контакты</Link>
@@ -117,7 +131,7 @@ export default function Menu({ type }: TypeMobileProps) {
 
   return type == "desktop" ? (
     <nav
-      className="menu p-6 col-span-4 mx-auto flex max-w-7xl items-center justify-between lg:px-8 xl:text-md md:text-sm"
+      className="menu p-6 col-span-6 mx-auto flex max-w-7xl items-center justify-between lg:px-8 xl:text-md md:text-sm"
       aria-label="Global"
     >
       <ul className="menu-list flex items-center justify-around gap-10 cursor-pointer text-nowrap">
@@ -135,7 +149,7 @@ export default function Menu({ type }: TypeMobileProps) {
         </button>
       </div>
       <Transition
-        as={Fragment}
+        as="div"
         show={isOpen}
         enter="transition ease-out duration-300"
         enterFrom="opacity-0 -translate-x-52"
@@ -171,7 +185,7 @@ export default function Menu({ type }: TypeMobileProps) {
                       key={i}
                     >
                       <Link
-                        href={solution.href}
+                        href={`/${solution.href}`}
                         onClick={() => setIsOpen(false)}
                       >
                         {solution.name}
@@ -183,7 +197,21 @@ export default function Menu({ type }: TypeMobileProps) {
                 className={`menu-list-item p-4 text-sm ${pathname == "/production" ? "bg-orange text-white" : "hover:bg-gray-light"}`}
               >
                 <Link href="/production" onClick={() => setIsOpen(false)}>
-                  О произвостве
+                  О производстве
+                </Link>
+              </li>
+              <li
+                className={`menu-list-item p-4 text-sm ${pathname == "/delivery" ? "bg-orange text-white" : "hover:bg-gray-light"}`}
+              >
+                <Link href="/delivery" onClick={() => setIsOpen(false)}>
+                  Доставка и установка
+                </Link>
+              </li>
+              <li
+                className={`menu-list-item p-4 text-sm ${pathname == "/production" ? "bg-orange text-white" : "hover:bg-gray-light"}`}
+              >
+                <Link href="/production" onClick={() => setIsOpen(false)}>
+                  Акции
                 </Link>
               </li>
               <li

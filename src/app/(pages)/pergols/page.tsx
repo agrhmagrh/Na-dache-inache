@@ -1,231 +1,179 @@
+"use client";
+import { useMemo, useState } from "react";
 import Image from "next/image";
-
+import Link from "next/link";
 import FormBlock from "../../HomeSections/FormBlock";
-import { CgIfDesign } from "react-icons/cg";
-import { TfiHummer } from "react-icons/tfi";
-import { RiCustomerServiceLine } from "react-icons/ri";
-import ButtonModal from "@/app/components/ButtonModal";
-import LightImage from "@/app/components/LightImage";
+import PopularCategories from "../../HomeSections/PopularCategories";
+import PergolsSeo from "../../components/PergolsSeo";
+import Breadcrumbs from "../../components/Breadcrumbs";
+import {
+  PERGOLA_PRODUCTS as PRODUCTS,
+  SHAPE_LABEL,
+  TYPE_LABEL,
+  type PergolaShape,
+  type PergolaType,
+} from "@/app/contstants/pergolsCatalog";
 
-export default function Pavilions() {
-  const pavilions = [
-    { url: "/img/pergola-1.jpg" },
-    { url: "/img/pergola-2.jpg" },
-    { url: "/img/pergola-3.jpg" },
-    { url: "/img/pergola-4.jpg" },
-    { url: "/img/pergola-5.jpg" },
-    { url: "/img/pergola-6.jpg" },
-  ];
+interface FiltersState {
+  shapes: Set<PergolaShape>;
+  kinds: Set<PergolaType>;
+}
+
+export default function PergolsCatalogPage() {
+  const [filters, setFilters] = useState<FiltersState>({
+    shapes: new Set<PergolaShape>(),
+    kinds: new Set<PergolaType>(),
+  });
+
+  const filtered = useMemo(() => {
+    return PRODUCTS.filter((p) => {
+      const byShape =
+        filters.shapes.size === 0 || filters.shapes.has(p.shape);
+      const byKind = filters.kinds.size === 0 || filters.kinds.has(p.kind);
+      return byShape && byKind;
+    });
+  }, [filters]);
+
+  const toggleShape = (shape: PergolaShape) => {
+    setFilters((prev) => {
+      const next = new Set(prev.shapes);
+      next.has(shape) ? next.delete(shape) : next.add(shape);
+      return { ...prev, shapes: next };
+    });
+  };
+
+  const toggleKind = (kind: PergolaType) => {
+    setFilters((prev) => {
+      const next = new Set(prev.kinds);
+      next.has(kind) ? next.delete(kind) : next.add(kind);
+      return { ...prev, kinds: next };
+    });
+  };
+
+  const resetFilters = () =>
+    setFilters({ shapes: new Set<PergolaShape>(), kinds: new Set<PergolaType>() });
 
   return (
-    <main>
-      <section className="bg-gray-dark h-[700px] bg-[url(/img/pergola-banner.jpg)] bg-top bg-no-repeat bg-cover">
-        <div className="max-w-screen-xl m-auto flex items-center justify-end h-full p-1">
-          <div className="xl:w-[500px] xl:h-[350px] bg-white p-3  flex flex-col">
-            <h1 className="md:text-4xl text-xl p-5 pb-2">
-              Индивидуальные перголы для дачи
+    <main className="bg-gray-light">
+      <PergolsSeo />
+      {/* Hero banner */}
+      <section className="bg-[url('/img/pergola-banner.jpg')] bg-cover bg-center" aria-label="Главный баннер">
+        <div className="bg-black/40">
+          <div className="max-w-screen-xl m-auto px-6 py-12 text-white">
+            <h1 className="text-2xl md:text-4xl font-bold mb-3">
+              Оплатите зимой – получите перголу весной без очереди
             </h1>
-            <span className="md:text-2xl p-5 pt-2 pb-10">
-              Создание идеального укрытия от солнца и дождя
-            </span>
-            <ButtonModal />
-          </div>
-        </div>
-      </section>
-      <section className="offers-block bg-gray-light relative pb-20">
-        <div className="content-offers max-w-screen-xl m-auto z-10 relative">
-          <div className="title flex items-center justify-center md:p-20 p-10">
-            <h3 className="relative font-bold md:text-4xl text-2xl md:leading-9 z-10 md:h-[40px] bg-gray-light">
-              Наши проекты
-            </h3>
-            <div className="title-border"></div>
-          </div>
-          <div className="offers-cards-wrapper bg-white grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-2 p-10 xl:px-40 px-10 justify-center">
-            {pavilions.map((bg, i) => {
-              return (
-                <div key={i} className="col-span-1 m-auto h-full">
-                  <LightImage url={bg.url}></LightImage>
-                </div>
-              );
-            })}
-          </div>
-          <div className="offers-cards-info bg-gray-dark text-white text-xl p-12 pt-8">
-            <h3 className="py-3 text-2xl text-orange">
-              Преимущества выбора индивидуальных пергол
-            </h3>
-            <p className="text-lg text-gray-additional">
-              Выбор индивидуальной перголы для вашей дачи предоставляет
-              множество преимуществ, делая ваш отдых более комфортным и
-              приятным:
+            <p className="md:text-xl mb-6">
+              Закажите сейчас и встречайте весну с готовой перголой
             </p>
-            <div className="xl:flex pt-4 gap-5">
-              <div className="flex flex-col gap-2 pb-2">
-                <div className="flex gap-2 items-center">
-                  <span className="text-[60px]">
-                    <CgIfDesign></CgIfDesign>
-                  </span>
-                  <h4 className="text-2xl">Защита от солнца</h4>
-                </div>
-                <span className="text-base text-gray-additional">
-                  Пергола обеспечивает надежную защиту от палящего солнца, что
-                  позволяет вам наслаждаться свежим воздухом на вашей даче даже
-                  в самые жаркие дни.
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 pb-2">
-                <div className="flex gap-2 items-center">
-                  <span className="text-[60px]">
-                    <RiCustomerServiceLine></RiCustomerServiceLine>
-                  </span>
-                  <h4 className="text-2xl">Уютное пространство для отдыха</h4>
-                </div>
-                <span className="text-base text-gray-additional">
-                  Пергола создает уютное пространство для отдыха и общения с
-                  семьей и друзьями. Вы можете наслаждаться природой, проводить
-                  время на свежем воздухе и отдыхать в уютной обстановке.
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 pb-2">
-                <div className="flex gap-2 items-center">
-                  <span className="text-[60px]">
-                    <TfiHummer></TfiHummer>
-                  </span>
-                  <h4 className="text-2xl">Долговечность и надежность</h4>
-                </div>
-                <span className="text-base text-gray-additional">
-                  Индивидуальные перголы изготавливаются из качественных
-                  материалов и имеют прочную конструкцию, что обеспечивает их
-                  долговечность и надежность на долгие годы.
-                </span>
-              </div>
-            </div>
+            <a
+              href="#catalog"
+              className="inline-block bg-orange text-white px-6 py-3 rounded-sm hover:opacity-90"
+            >
+              К выбору перголы
+            </a>
           </div>
         </div>
-        <div className="middle-block absolute m-auto w-full h-[40%] z-0 top-1/3 bg-gray-dark-block"></div>
       </section>
-      <section>
-        <div className="max-w-screen-xl m-auto flex flex-col gap-10 xl:p-10 xl:py-20 p-5">
-          <div className="title flex items-center justify-center md:p-20 pb-5">
-            <h3 className="relative font-bold md:text-4xl text-2xl md:leading-9 z-10 md:h-[40px] bg-white">
-              Разнообразие выбора и материалы
-            </h3>
-            <div className="title-border"></div>
-          </div>
-          <div className="text-lg">
-            Выбор индивидуальной перголы для дачи предоставляет широкие
-            возможности для создания уникального и стильного пространства. Вот
-            некоторые из популярных вариантов:
-          </div>
 
-          <div className="grid grid-cols-8 sm:grid-rows-2 grid-rows-4 gap-x-5 items-center bg-gray-product text-white p-10 ">
-            <Image
-              className="rounded col-span-2 xl:row-span-4 row-span-1"
-              src={"/img/derevo.jpg"}
-              alt="Дерево беседка"
-              width={200}
-              height={200}
-            ></Image>
-            <h4 className="text-2xl text-orange font-bold col-span-6 row-span-1">
-              Дерево
-            </h4>
-            <span className="text-lg xl:row-span-2 xl:col-span-6 col-span-8 row-span-3">
-              Перголы из натурального дерева придают вашей даче естественный и
-              стильный вид. Они могут быть выполнены из различных пород дерева,
-              таких как сосна, ель, дуб, кедр и другие.
-            </span>
+      {/* Catalog with filters */}
+      <section id="catalog" className="max-w-screen-xl m-auto px-6 py-10 grid grid-cols-12 gap-6" aria-label="Каталог пергол">
+        {/* Sidebar */}
+        <aside className="col-span-12 md:col-span-3 order-2 md:order-1">
+          <div className="bg-white border border-gray-additional rounded p-4 sticky top-4">
+            <div className="font-semibold mb-4">Фильтр</div>
+
+            <div className="mb-5">
+              <div className="text-sm text-gray-600 mb-2">Назначение</div>
+              <div className="flex flex-col gap-2">
+                {(Object.keys(TYPE_LABEL) as Array<keyof typeof TYPE_LABEL>).map((k) => (
+                  <label key={k} className="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="accent-orange"
+                      checked={filters.kinds.has(k)}
+                      onChange={() => toggleKind(k)}
+                    />
+                    <span>{TYPE_LABEL[k]}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-5">
+              <div className="text-sm text-gray-600 mb-2">Форма</div>
+              <div className="flex flex-col gap-2">
+                {(Object.keys(SHAPE_LABEL) as Array<keyof typeof SHAPE_LABEL>).map((s) => (
+                  <label key={s} className="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="accent-orange"
+                      checked={filters.shapes.has(s)}
+                      onChange={() => toggleShape(s)}
+                    />
+                    <span>{SHAPE_LABEL[s]}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="border border-gray-additional text-gray-700 px-4 py-2 w-full hover:bg-gray-50"
+            >
+              Сбросить фильтр
+            </button>
+
+            <div className="mt-6 flex items-center gap-3 p-3 border border-gray-additional rounded">
+              <div className="relative w-12 h-12 shrink-0 rounded-full overflow-hidden">
+                <Image src="/img/handsome.jpg" alt="Менеджер" fill className="object-cover" />
+              </div>
+              <div className="text-sm">
+                <div className="font-semibold">Александра</div>
+                <div className="text-gray-600">Бесплатно помогу с выбором 24/7</div>
+                <a href="tel:+74999386359" className="text-orange">+7 (499) 938-63-59</a>
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-8 sm:grid-rows-2 grid-rows-4 gap-x-5 items-center bg-gray-product text-white p-10">
-            <Image
-              className="rounded col-span-2 xl:row-span-4 row-span-1"
-              src={"/img/metal.jpg"}
-              alt="Дерево беседка"
-              width={200}
-              height={200}
-            ></Image>
-            <h4 className="text-2xl text-orange font-bold col-span-6 row-span-1">
-              Металл
-            </h4>
-            <span className="text-lg xl:row-span-2 xl:col-span-6 col-span-8 row-span-3">
-              Металлические перголы обладают современным и прочным дизайном. Они
-              могут быть изготовлены из стали, алюминия или других металлических
-              сплавов и подходят для различных стилей оформления.
-            </span>
-          </div>
-          <div className="grid grid-cols-8 sm:grid-rows-2 grid-rows-4 gap-x-5 items-center bg-gray-product text-white p-10">
-            <Image
-              className="rounded col-span-2 xl:row-span-4 row-span-1"
-              src={"/img/pergola-tkan.jpg"}
-              alt="Дерево беседка"
-              width={200}
-              height={200}
-            ></Image>
-            <h4 className="text-2xl text-orange font-bold col-span-6 row-span-1">
-              Ткань
-            </h4>
-            <span className="text-lg xl:row-span-2 xl:col-span-6 col-span-8 row-span-3">
-              Перголы с тканевым навесом обеспечивают легкость и воздушность.
-              Они могут быть выполнены из водоотталкивающих материалов и
-              предоставляют защиту от солнца и дождя.
-            </span>
+        </aside>
+
+        {/* Products grid */}
+        <div className="col-span-12 md:col-span-9 order-1 md:order-2">
+          <Breadcrumbs items={[{ label: "Перголы" }]} />
+          <h2 className="text-2xl font-bold mb-6">Каталог пергол</h2>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список пергол">
+            {filtered.map((p) => (
+              <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
+                <div className="h-44 relative">
+                  <Image
+                    src={p.image}
+                    alt={p.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="bg-gray-product text-white p-4">
+                  <div className="font-semibold">{p.price.toLocaleString("ru-RU")} руб.</div>
+                  <div className="text-sm text-gray-200">{p.title}</div>
+                  <div className="mt-3 text-xs text-gray-200">
+                    Форма: {SHAPE_LABEL[p.shape]} • Назначение: {TYPE_LABEL[p.kind]}
+                  </div>
+                  <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
+                  <Link href={`/pergols/${p.id}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
+                    Перейти
+                  </Link>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
-      <section className="bg-gray-dark-block p-5">
-        <div className="m-auto max-w-screen-xl py-20">
-          <div className="examples-block-title text-white font-bold text-3xl relative xl:px-0 px-5">
-            <h4 className="bg-gray-dark-block block mt-4 py-2 relative z-10">
-              Почему следует выбрать нашу компанию
-            </h4>
-            <div className="absolute border w-[200px] h-[70px] border-gray-additional z-0 top-[-10px]"></div>
-          </div>
-          <div className="text-gray-additional text-lg py-10 px-5 xl:px-0">
-            Выбирая нашу компанию для создания индивидуальной перголы для вашей
-            дачи, вы получаете:
-          </div>
-          <div className="grid md:grid-cols-3 gap-5">
-            <div className="flex flex-col">
-              <div className="text-white flex flex-col gap-3 p-2 md:order-last">
-                <span className="text-orange text-2xl">
-                  Профессионализм и опыт
-                </span>
-                <span className="text-lg">
-                  Наша команда специалистов имеет богатый опыт в создании
-                  качественных пергол на заказ и готова воплотить в жизнь ваши
-                  идеи и предпочтения.
-                </span>
-              </div>
-              <div className="min-h-[576px] bg-gray-dark mb-10 bg-[url(/img/handsome.jpg)] bg-cover bg-[-300px]"></div>
-            </div>
-            <div className="flex flex-col">
-              <div className="text-white flex flex-col gap-3">
-                <span className="text-orange text-2xl">
-                  Индивидуальный подход
-                </span>
-                <span className="text-lg">
-                  Мы учитываем все ваши пожелания и особенности вашего участка,
-                  чтобы создать идеальное пространство для вашего отдыха и
-                  развлечений.
-                </span>
-              </div>
-              <div className="min-h-[576px] bg-gray-dark mt-10 bg-[url(/img/quality.jpg)] bg-cover"></div>
-            </div>
-            <div className="flex flex-col">
-              <div className="text-white flex flex-col gap-3 p-2 md:order-last">
-                <span className="text-orange text-2xl">
-                  Качество и гарантия
-                </span>
-                <span className="text-lg">
-                  Мы используем только высококачественные материалы и
-                  гарантируем долговечность и надежность наших конструкций на
-                  долгие годы.
-                </span>
-              </div>
-              <div className="min-h-[576px] bg-gray-dark mb-10 bg-[url(/img/garanty.jpg)] bg-cover bg-[-270px]"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <FormBlock></FormBlock>
+
+      <FormBlock />
+      <PopularCategories />
     </main>
   );
 }

@@ -32,30 +32,6 @@ body {
   left: -15px;
   top: 8px;
 }
-.background-form {
-  position: absolute;
-  background-color: #353a43;
-  width: 560px;
-  height: 750px;
-  top: -100px;
-  left: -60px;
-  z-index: 1;
-}
-
-@media screen and (min-width: 1280px) {
-  .form-border:before {
-    content: "";
-    border: #9e9494 2px solid;
-    width: 500px;
-    height: 610px;
-    position: absolute;
-    z-index: 10;
-    border-left: none;
-    top: -20px;
-    left: -60px;
-  }
-  
-}
 
 .title-border {
   position: absolute;
@@ -63,4 +39,13 @@ body {
   height: 70px;
   z-index: 1;
   border: 2px solid #9e9494;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }

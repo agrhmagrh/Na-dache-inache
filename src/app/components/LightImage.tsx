@@ -5,7 +5,7 @@ import { Fragment, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { FaTimes } from "react-icons/fa";
 
-export default function LightImage({ url }: { url: string }) {
+export default function LightImage({ url, alt }: { url: string; alt?: string }) {
   let [isOpen, setIsOpen] = useState(false);
 
   const closeModal = useCallback(() => {
@@ -23,7 +23,7 @@ export default function LightImage({ url }: { url: string }) {
         width={310}
         height={310}
         src={url}
-        alt="Image"
+        alt={alt || "Изображение"}
       />
       {isOpen &&
         createPortal(
@@ -49,7 +49,7 @@ export default function LightImage({ url }: { url: string }) {
                   <FaTimes />
                 </button>
                 <div className="flex min-h-full md:w-3/4 m-auto items-center justify-center p-4 text-center">
-                  <Image width={1000} height={1000} src={url} alt="" className="rounded" />
+                  <Image width={1000} height={1000} src={url} alt={alt || "Изображение"} className="rounded" />
                 </div>
               </div>
             </Dialog>
