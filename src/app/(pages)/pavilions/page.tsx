@@ -17,6 +17,7 @@ import {
 import { useProducts } from "@/hooks";
 import AdditionalImagesDemo from "@/components/AdditionalImagesDemo";
 import { apiUtils } from "@/app/api/lib/api";
+import ProductsLoadingState from "@/components/ProductsLoadingState";
 
 interface FiltersState {
   shapes: Set<PavilionShape>;
@@ -156,11 +157,12 @@ export default function PavilionsCatalogPage() {
         </aside>
 
         {/* Products grid */}
-        <div className="col-span-12 md:col-span-9 order-1 md:order-2">
-          <Breadcrumbs items={[{ label: "Беседки" }]} />
-          <h2 className="text-2xl font-bold mb-6">Каталог беседок</h2>
+        <ProductsLoadingState loading={pavilionsProducts.loading} error={pavilionsProducts.error}>
+          <div className="col-span-12 md:col-span-9 order-1 md:order-2">
+            <Breadcrumbs items={[{ label: "Беседки" }]} />
+            <h2 className="text-2xl font-bold mb-6">Каталог беседок</h2>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список беседок">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список беседок">
             {filtered.map((p) => (
               <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
                 <div className="h-44 relative">
@@ -185,7 +187,7 @@ export default function PavilionsCatalogPage() {
                     Внешний вид: {SHAPE_LABEL[p.shape as PavilionShape]} • Вид: {TYPE_LABEL[p.type as PavilionType]}
                   </div>
                   <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
-                  <Link href={`/pavilions/${p.id}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
+                  <Link href={`/pavilions/${p.slug}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
                     Перейти
                   </Link>
                 </div>
@@ -193,7 +195,8 @@ export default function PavilionsCatalogPage() {
               </article>
             ))}
           </div>
-        </div>
+          </div>
+        </ProductsLoadingState>
       </section>
 
       <FormBlock />
