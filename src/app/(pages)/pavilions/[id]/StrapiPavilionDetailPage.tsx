@@ -13,12 +13,12 @@ import PavilionGallery from '@/app/components/PavilionGallery';
 import FormBlock from '@/app/HomeSections/FormBlock';
 import PopularCategories from '@/app/HomeSections/PopularCategories';
 
-export const StrapiCanopyDetailPage: React.FC = () => {
+export const StrapiPavilionDetailPage: React.FC = () => {
   const params = useParams();
   const slug = params?.id as string;
   
   const { product, loading, error } = useProductBySlug(slug);
-  const { products: similarProducts } = useProducts('canopies');
+  const { products: similarProducts } = useProducts('pavilions');
 
   if (loading) {
     return (
@@ -37,7 +37,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
         <div className="text-center">
           <p className="text-red-600 mb-4">Ошибка загрузки товара</p>
           <p className="text-gray-600">{error || 'Товар не найден'}</p>
-          <Link href="/canopies" className="mt-4 inline-block bg-orange text-white px-6 py-2 rounded">
+          <Link href="/pavilions" className="mt-4 inline-block bg-orange text-white px-6 py-2 rounded">
             Вернуться в каталог
           </Link>
         </div>
@@ -87,7 +87,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
           <div className="bg-white border border-gray-additional rounded p-4 sticky top-4">
             <div className="font-semibold mb-2">Навигация</div>
             <div className="text-sm text-gray-500 mb-3">Используйте фильтры на странице каталога</div>
-            <Link href="/canopies" className="inline-block text-orange hover:underline">
+            <Link href="/pavilions" className="inline-block text-orange hover:underline">
               ← Вернуться в каталог
             </Link>
           </div>
@@ -97,7 +97,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
         <div className="col-span-12 md:col-span-9">
           <Breadcrumbs
             items={[
-              { label: "Навесы", href: "/canopies" },
+              { label: "Беседки", href: "/pavilions" },
               { label: product.title },
             ]}
           />
@@ -131,7 +131,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
                     <span className="font-semibold text-black">{product.areaM2} м²</span>
                   </div>
                   <div>
-                    <span className="text-gray-additional">Форма навеса:</span>{" "}
+                    <span className="text-gray-additional">Форма:</span>{" "}
                     <span className="font-semibold text-black">{product.shape}</span>
                   </div>
                   <div>
@@ -163,9 +163,10 @@ export const StrapiCanopyDetailPage: React.FC = () => {
                 <div className="mt-5">
                   <div className="font-semibold text-black mb-1">Комплектация:</div>
                   <ul className="space-y-1 text-sm text-gray-additional">
-                    <li>• Навес (полный комплект для сборки)</li>
-                    <li>• Гидроизоляция фундамента</li>
-                    <li>• Винтовые сваи (опционально)</li>
+                    <li>• Беседка (полный комплект для сборки)</li>
+                    <li>• Кровельный материал</li>
+                    <li>• Крепежные элементы</li>
+                    <li>• Инструкция по сборке</li>
                   </ul>
                   <button className="text-black mt-2 hover:underline">
                     Читать подробнее
@@ -186,9 +187,9 @@ export const StrapiCanopyDetailPage: React.FC = () => {
               ) : (
                 <div className="prose max-w-none">
                   <p>
-                    Навесы — практичное решение для защиты автомобиля, террасы или крыльца
-                    от осадков и солнца. Мы поможем подобрать оптимальную конструкцию по
-                    размерам, форме и назначению, с учетом особенностей участка.
+                    Беседка — идеальное место для отдыха на свежем воздухе. 
+                    Мы предлагаем качественные конструкции различных форм и размеров, 
+                    которые станут украшением вашего участка и местом для приятного времяпрепровождения.
                   </p>
                 </div>
               )
@@ -198,7 +199,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
           {/* Similar Products */}
           {similar.length > 0 && (
             <section className="mt-10">
-              <h2 className="text-2xl font-bold mb-4">Похожие навесы</h2>
+              <h2 className="text-2xl font-bold mb-4">Похожие беседки</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {similar.map((p) => {
                   const productImages = StrapiImageUtils.getProductImages(p, p.additionalImages || []);
@@ -224,7 +225,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
                         <div className="font-semibold">{apiUtils.formatPrice(p.price)}</div>
                         <div className="text-sm text-gray-200 mb-3">{p.title}</div>
                         <Link 
-                          href={`/canopies/${p.slug}`}
+                          href={`/pavilions/${p.slug}`}
                           className="block w-full bg-orange text-white py-2 text-center font-semibold hover:bg-orange-600 transition-colors"
                         >
                           Перейти

@@ -1,21 +1,32 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import FormBlock from "../../HomeSections/FormBlock";
 import PopularCategories from "../../HomeSections/PopularCategories";
 import PergolsSeo from "../../components/PergolsSeo";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import {
-  PERGOLA_PRODUCTS as PRODUCTS,
-  SHAPE_LABEL,
-  TYPE_LABEL,
-  type PergolaShape,
-  type PergolaType,
-} from "@/app/contstants/pergolsCatalog";
+import { StrapiCard } from "../../components/StrapiCard";
 import { useProducts } from "@/hooks";
-import { apiUtils } from "@/app/api/lib/api";
-import ProductsLoadingState from "@/components/ProductsLoadingState";
+
+// Define filter types based on common values
+type PergolaShape = 'rectangular' | 'square' | 'round' | 'arched' | 'l-shaped';
+type PergolaType = 'garden' | 'terrace' | 'entrance' | 'commercial' | 'decorative';
+
+const SHAPE_LABELS: Record<PergolaShape, string> = {
+  'rectangular': 'Прямоугольная',
+  'square': 'Квадратная',
+  'round': 'Круглая',
+  'arched': 'Арочная',
+  'l-shaped': 'Г-образная'
+};
+
+const TYPE_LABELS: Record<PergolaType, string> = {
+  'garden': 'Садовая',
+  'terrace': 'Для террасы',
+  'entrance': 'Над входом',
+  'commercial': 'Коммерческая',
+  'decorative': 'Декоративная'
+};
 
 interface FiltersState {
   shapes: Set<PergolaShape>;
@@ -23,24 +34,18 @@ interface FiltersState {
 }
 
 export default function PergolsCatalogPage() {
-  const pergolsProducts = useProducts('pergols');
+  const { products, loading, error } = useProducts('pergols');
   const [filters, setFilters] = useState<FiltersState>({
     shapes: new Set<PergolaShape>(),
     kinds: new Set<PergolaType>(),
   });
 
-  // Use products from API, fallback to static data if needed
-  const filtered = !pergolsProducts.products || pergolsProducts.products.length === 0
-    ? PRODUCTS.filter((p) => {
-        const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape);
-        const byKind = filters.kinds.size === 0 || filters.kinds.has(p.kind);
-        return byShape && byKind;
-      })
-    : pergolsProducts.products.filter((p) => {
-        const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape as PergolaShape);
-        const byKind = filters.kinds.size === 0 || filters.kinds.has(p.type as PergolaType);
-        return byShape && byKind;
-      });
+  // Filter products from API only
+  const filtered = products.filter((p) => {
+    const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape as PergolaShape);
+    const byKind = filters.kinds.size === 0 || filters.kinds.has(p.type as PergolaType);
+    return byShape && byKind;
+  });
 
   const toggleShape = (shape: PergolaShape) => {
     setFilters((prev) => {
@@ -94,7 +99,7 @@ export default function PergolsCatalogPage() {
             <div className="mb-5">
               <div className="text-sm text-gray-600 mb-2">Назначение</div>
               <div className="flex flex-col gap-2">
-                {(Object.keys(TYPE_LABEL) as Array<keyof typeof TYPE_LABEL>).map((k) => (
+                {(Object.keys(TYPE_LABELS) as Array<keyof typeof TYPE_LABELS>).map((k) => (
                   <label key={k} className="inline-flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
@@ -102,7 +107,7 @@ export default function PergolsCatalogPage() {
                       checked={filters.kinds.has(k)}
                       onChange={() => toggleKind(k)}
                     />
-                    <span>{TYPE_LABEL[k]}</span>
+                    <span>{TYPE_LABELS[k]}</span>
                   </label>
                 ))}
               </div>
@@ -111,7 +116,7 @@ export default function PergolsCatalogPage() {
             <div className="mb-5">
               <div className="text-sm text-gray-600 mb-2">Форма</div>
               <div className="flex flex-col gap-2">
-                {(Object.keys(SHAPE_LABEL) as Array<keyof typeof SHAPE_LABEL>).map((s) => (
+                {(Object.keys(SHAPE_LABELS) as Array<keyof typeof SHAPE_LABELS>).map((s) => (
                   <label key={s} className="inline-flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
@@ -119,7 +124,7 @@ export default function PergolsCatalogPage() {
                       checked={filters.shapes.has(s)}
                       onChange={() => toggleShape(s)}
                     />
-                    <span>{SHAPE_LABEL[s]}</span>
+                    <span>{SHAPE_LABELS[s]}</span>
                   </label>
                 ))}
               </div>
@@ -147,55 +152,67 @@ export default function PergolsCatalogPage() {
         </aside>
 
         {/* Products grid */}
-        <ProductsLoadingState loading={pergolsProducts.loading} error={pergolsProducts.error}>
-          <div className="col-span-12 md:col-span-9 order-1 md:order-2">
-            <Breadcrumbs items={[{ label: "Перголы" }]} />
-            <h2 className="text-2xl font-bold mb-6">Каталог пергол</h2>
+        <div className="col-span-12 md:col-span-9 order-1 md:order-2">
+          <Breadcrumbs items={[{ label: "Перголы" }]} />
+          <h2 className="text-2xl font-bold mb-6">Каталог пергол</h2>
 
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange mx-auto mb-4"></div>
+                <p className="text-gray-600">Загрузка товаров...</p>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+                <div className="text-red-600 mb-2">Ошибка загрузки</div>
+                <p className="text-gray-600 text-sm">{error}</p>
+              </div>
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 max-w-md mx-auto">
+                <div className="text-gray-400 mb-4">
+                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Товары не найдены</h3>
+                <p className="text-gray-600 text-sm">В данный момент перголы недоступны. Попробуйте позже или свяжитесь с нами для получения информации.</p>
+                <div className="mt-4">
+                  <a href="tel:+74999386359" className="text-orange hover:underline">
+                    +7 (499) 938-63-59
+                  </a>
+                </div>
+              </div>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-md mx-auto">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Нет товаров по выбранным фильтрам</h3>
+                <p className="text-gray-600 text-sm mb-4">Попробуйте изменить параметры поиска</p>
+                <button
+                  onClick={resetFilters}
+                  className="bg-orange text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors"
+                >
+                  Сбросить фильтры
+                </button>
+              </div>
+            </div>
+          ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список пергол">
-            {filtered.map((p) => (
-              <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
-                <div className="h-44 relative">
-                  <Image
-                    src={pergolsProducts.products && pergolsProducts.products.length > 0 
-                      ? apiUtils.getImageUrl((p as any).image.url) 
-                      : (p as any).image
-                    }
-                    alt={pergolsProducts.products && pergolsProducts.products.length > 0 
-                      ? ((p as any).image.alternativeText || p.title)
-                      : p.title
-                    }
-                    fill
-                    className="object-cover"
-                  />
-                  {/* Show additional images count if available */}
-                  {pergolsProducts.products && pergolsProducts.products.length > 0 && (p as any).additionalImages && (p as any).additionalImages.length > 0 && (
-                    <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
-                      +{(p as any).additionalImages.length} фото
-                    </div>
-                  )}
-                </div>
-
-                <div className="bg-gray-product text-white p-4">
-                  <div className="font-semibold">{p.price.toLocaleString("ru-RU")} руб.</div>
-                  <div className="text-sm text-gray-200">{p.title}</div>
-                  <div className="mt-3 text-xs text-gray-200">
-                    {pergolsProducts.products && pergolsProducts.products.length > 0 ? (
-                      <>Форма: {SHAPE_LABEL[(p as any).shape as PergolaShape]} • Назначение: {TYPE_LABEL[(p as any).type as PergolaType]}</>
-                    ) : (
-                      <>Форма: {SHAPE_LABEL[(p as any).shape as PergolaShape]} • Назначение: {TYPE_LABEL[(p as any).kind as PergolaType]}</>
-                    )}
-                  </div>
-                  <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
-                  <Link href={`/pergols/${p.id}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
-                    Перейти
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-          </div>
-        </ProductsLoadingState>
+              {filtered.map((product) => (
+                <StrapiCard
+                  key={product.id}
+                  product={product}
+                  categorySlug="pergols"
+                  additionalImages={product.additionalImages}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
       <FormBlock />

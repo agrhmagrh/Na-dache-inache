@@ -187,7 +187,7 @@ export default function PavilionsCatalogPage() {
                     Внешний вид: {SHAPE_LABEL[p.shape as PavilionShape]} • Вид: {TYPE_LABEL[p.type as PavilionType]}
                   </div>
                   <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
-                  <Link href={`/pavilions/${p.id}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
+                  <Link href={`/pavilions/${p.slug}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
                     Перейти
                   </Link>
                 </div>
