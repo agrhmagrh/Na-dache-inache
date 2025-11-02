@@ -10,22 +10,70 @@ import {
   PERGOLA_PRODUCTS,
   SHAPE_LABEL,
   TYPE_LABEL,
+  type PergolaShape,
+  type PergolaType,
 } from "@/app/contstants/pergolsCatalog";
+import { productsApi, apiUtils } from "@/app/api/lib/api";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  try {
+    // Try to get products from API first
+    const apiProducts = await productsApi.getByCategory('pergols');
+    if (apiProducts.length > 0) {
+      return apiProducts.map((p) => ({ id: String(p.id) }));
+    }
+  } catch (error) {
+    console.error('Error generating static params from API:', error);
+  }
+  
+  // Fallback to static products
   return PERGOLA_PRODUCTS.map((p) => ({ id: String(p.id) }));
 }
 
 export default async function PergolaDetailsPage({ params }: any) {
   const { id } = await params;
-  const product = PERGOLA_PRODUCTS.find((p) => String(p.id) === id);
-  if (!product) return notFound();
+  
+  // Try to get product from API first
+  let product = null;
+  let isFromApi = false;
+  
+  try {
+    product = await productsApi.getById(id);
+    if (product) {
+      isFromApi = true;
+    }
+  } catch (error) {
+    console.error('Error fetching product from API:', error);
+  }
+  
+  // Fallback to static data
+  if (!product) {
+    product = PERGOLA_PRODUCTS.find((p) => String(p.id) === id);
+    if (!product) return notFound();
+  }
 
-  const gallery = [product.image, "/img/pergola-1.jpg", "/img/pergola-2.jpg"]; // простая заглушка
-  const similar = PERGOLA_PRODUCTS.filter((p) => p.id !== product.id).slice(
-    0,
-    4
-  );
+  // Prepare gallery images
+  const gallery = isFromApi 
+    ? [
+        apiUtils.getImageUrl(product.image.url),
+        ...(product.gallery?.map(img => apiUtils.getImageUrl(img.url)) || []),
+        ...(product.additionalImages?.map(img => apiUtils.getImageUrl(img.url)) || [])
+      ]
+    : [product.image, "/img/pergola-1.jpg", "/img/pergola-2.jpg"];
+
+  // Get similar products
+  let similar = [];
+  try {
+    if (isFromApi) {
+      const allProducts = await productsApi.getByCategory('pergols');
+      similar = allProducts.filter((p) => p.id !== product.id).slice(0, 4);
+    } else {
+      similar = PERGOLA_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+    }
+  } catch (error) {
+    console.error('Error fetching similar products:', error);
+    similar = PERGOLA_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+  }
 
   return (
     <main className="bg-gray-light">
@@ -49,7 +97,7 @@ export default async function PergolaDetailsPage({ params }: any) {
             items={[
               { label: "Перголы", href: "/pergols" },
               {
-                label: `${SHAPE_LABEL[product.shape]} пергола ${product.title.toUpperCase()}`,
+                label: `${SHAPE_LABEL[product.shape as PergolaShape]} пергола ${product.title.toUpperCase()}`,
               },
             ]}
           />
@@ -63,7 +111,7 @@ export default async function PergolaDetailsPage({ params }: any) {
             <div className="col-span-12 lg:col-span-5">
               <div className="bg-white rounded p-5 border border-gray-additional">
                 <h1 className="text-base md:text-lg font-semibold text-black mb-3">
-                  {SHAPE_LABEL[product.shape]} пергола{" "}
+                  {SHAPE_LABEL[product.shape as PergolaShape]} пергола{" "}
                   {product.title.toUpperCase()}
                 </h1>
 
@@ -85,13 +133,13 @@ export default async function PergolaDetailsPage({ params }: any) {
                   <div>
                     <span className="text-gray-additional">Форма:</span>{" "}
                     <span className="font-semibold text-black">
-                      {SHAPE_LABEL[product.shape].toLowerCase()}
+                      {SHAPE_LABEL[product.shape as PergolaShape].toLowerCase()}
                     </span>
                   </div>
                   <div>
                     <span className="text-gray-additional">Тип:</span>{" "}
                     <span className="font-semibold text-black">
-                      {TYPE_LABEL[product.kind].toLowerCase()}
+                      {TYPE_LABEL[(isFromApi ? product.type : product.kind) as PergolaType].toLowerCase()}
                     </span>
                   </div>
                 </div>
@@ -131,11 +179,15 @@ export default async function PergolaDetailsPage({ params }: any) {
           <ProductTabs
             className="mt-6"
             description={
-              <>
-                Пергола формирует уютную зону отдыха и защищает от солнца и
-                осадков. Подберем решение по стилю, бюджету и требованиям
-                участка. Возможна индивидуальная доработка проекта.
-              </>
+              isFromApi && product.description ? (
+                <div dangerouslySetInnerHTML={{ __html: product.description }} />
+              ) : (
+                <>
+                  Пергола формирует уютную зону отдыха и защищает от солнца и
+                  осадков. Подберем решение по стилю, бюджету и требованиям
+                  участка. Возможна индивидуальная доработка проекта.
+                </>
+              )
             }
           />
 
@@ -150,8 +202,8 @@ export default async function PergolaDetailsPage({ params }: any) {
                 >
                   <div className="relative h-40">
                     <Image
-                      src={p.image}
-                      alt={p.title}
+                      src={isFromApi ? apiUtils.getImageUrl(p.image.url) : p.image}
+                      alt={isFromApi ? (p.image.alternativeText || p.title) : p.title}
                       fill
                       className="object-cover"
                     />

@@ -11,19 +11,70 @@ import {
   PAVILION_PRODUCTS,
   SHAPE_LABEL,
   TYPE_LABEL,
+  type PavilionShape,
+  type PavilionType,
 } from "@/app/contstants/pavilionsCatalog";
+import { productsApi, apiUtils } from "@/app/api/lib/api";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  try {
+    // Try to get products from API first
+    const apiProducts = await productsApi.getByCategory('pavilions');
+    if (apiProducts.length > 0) {
+      return apiProducts.map((p) => ({ id: String(p.id) }));
+    }
+  } catch (error) {
+    console.error('Error generating static params from API:', error);
+  }
+  
+  // Fallback to static products
   return PAVILION_PRODUCTS.map((p) => ({ id: String(p.id) }));
 }
 
 export default async function PavilionDetailsPage({ params }: any) {
   const { id } = await params;
-  const product = PAVILION_PRODUCTS.find((p) => String(p.id) === id);
-  if (!product) return notFound();
+  
+  // Try to get product from API first
+  let product = null;
+  let isFromApi = false;
+  
+  try {
+    product = await productsApi.getById(id);
+    if (product) {
+      isFromApi = true;
+    }
+  } catch (error) {
+    console.error('Error fetching product from API:', error);
+  }
+  
+  // Fallback to static data
+  if (!product) {
+    product = PAVILION_PRODUCTS.find((p) => String(p.id) === id);
+    if (!product) return notFound();
+  }
 
-  const gallery = [product.image, "/img/pavilions/1.jpg", "/img/pavilions/2.jpg"]; // простая заглушка из доступных изображений
-  const similar = PAVILION_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+  // Prepare gallery images
+  const gallery = isFromApi 
+    ? [
+        apiUtils.getImageUrl(product.image.url),
+        ...(product.gallery?.map(img => apiUtils.getImageUrl(img.url)) || []),
+        ...(product.additionalImages?.map(img => apiUtils.getImageUrl(img.url)) || [])
+      ]
+    : [product.image, "/img/pavilions/1.jpg", "/img/pavilions/2.jpg"];
+
+  // Get similar products
+  let similar = [];
+  try {
+    if (isFromApi) {
+      const allProducts = await productsApi.getByCategory('pavilions');
+      similar = allProducts.filter((p) => p.id !== product.id).slice(0, 4);
+    } else {
+      similar = PAVILION_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+    }
+  } catch (error) {
+    console.error('Error fetching similar products:', error);
+    similar = PAVILION_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+  }
 
   return (
     <main className="bg-gray-light">
@@ -42,7 +93,7 @@ export default async function PavilionDetailsPage({ params }: any) {
           <Breadcrumbs
             items={[
               { label: "Беседки", href: "/pavilions" },
-              { label: `${SHAPE_LABEL[product.shape]} беседка ${product.title.toUpperCase()}` },
+              { label: `${SHAPE_LABEL[product.shape as PavilionShape]} беседка ${product.title.toUpperCase()}` },
             ]}
           />
           <div className="grid grid-cols-12 gap-4">
@@ -55,7 +106,7 @@ export default async function PavilionDetailsPage({ params }: any) {
             <div className="col-span-12 lg:col-span-5">
               <div className="bg-white rounded p-5 border border-gray-additional">
                 <h1 className="text-base md:text-lg font-semibold text-black mb-3">
-                  {SHAPE_LABEL[product.shape]} беседка {product.title.toUpperCase()}
+                  {SHAPE_LABEL[product.shape as PavilionShape]} беседка {product.title.toUpperCase()}
                 </h1>
 
                 <div className="space-y-1.5 text-sm mb-4">
@@ -69,11 +120,11 @@ export default async function PavilionDetailsPage({ params }: any) {
                   </div>
                   <div>
                     <span className="text-gray-additional">Форма беседки:</span>{" "}
-                    <span className="font-semibold text-black">{SHAPE_LABEL[product.shape].toLowerCase()}</span>
+                    <span className="font-semibold text-black">{SHAPE_LABEL[product.shape as PavilionShape].toLowerCase()}</span>
                   </div>
                   <div>
                     <span className="text-gray-additional">Вид беседки:</span>{" "}
-                    <span className="font-semibold text-black">{TYPE_LABEL[product.kind].toLowerCase()}</span>
+                    <span className="font-semibold text-black">{TYPE_LABEL[(isFromApi ? product.type : product.kind) as PavilionType].toLowerCase()}</span>
                   </div>
                 </div>
 
@@ -104,22 +155,26 @@ export default async function PavilionDetailsPage({ params }: any) {
           <ProductTabs
             className="mt-6"
             description={
-              <>
-                Современный ландшафтный дизайн и беседки — центральные элементы
-                загородного участка. Беседка должна размещаться в таком месте
-                участка, где вам будет комфортно находиться, а также она должна
-                отвечать своему назначению и притягивать взгляды. Беседка
-                является уникальным строением, с ее помощью можно отдохнуть за
-                чашечкой кофе, укрыться от знойного солнца или провести шумный
-                праздник в кругу семьи и друзей. Как любой архитектурный
-                элемент, беседка должна отвечать трем основным требованиям —
-                надежность, функциональность и красота. В зависимости от
-                предпочтений владельцев участка и особенностей ландшафта будет
-                определяться конфигурация строения. Наши специалисты помогут с
-                выбором модели беседки, ее конструкцией и дизайнерским решением.
-                Индивидуально для Вас мы разработаем визуализацию и проект
-                конструкции, которая станет центром внимания вашего участка.
-              </>
+              isFromApi && product.description ? (
+                <div dangerouslySetInnerHTML={{ __html: product.description }} />
+              ) : (
+                <>
+                  Современный ландшафтный дизайн и беседки — центральные элементы
+                  загородного участка. Беседка должна размещаться в таком месте
+                  участка, где вам будет комфортно находиться, а также она должна
+                  отвечать своему назначению и притягивать взгляды. Беседка
+                  является уникальным строением, с ее помощью можно отдохнуть за
+                  чашечкой кофе, укрыться от знойного солнца или провести шумный
+                  праздник в кругу семьи и друзей. Как любой архитектурный
+                  элемент, беседка должна отвечать трем основным требованиям —
+                  надежность, функциональность и красота. В зависимости от
+                  предпочтений владельцев участка и особенностей ландшафта будет
+                  определяться конфигурация строения. Наши специалисты помогут с
+                  выбором модели беседки, ее конструкцией и дизайнерским решением.
+                  Индивидуально для Вас мы разработаем визуализацию и проект
+                  конструкции, которая станет центром внимания вашего участка.
+                </>
+              )
             }
           />
 
@@ -130,7 +185,12 @@ export default async function PavilionDetailsPage({ params }: any) {
               {similar.map((p) => (
                 <article key={p.id} className="bg-white shadow rounded overflow-hidden">
                   <div className="relative h-40">
-                    <Image src={p.image} alt={p.title} fill className="object-cover" />
+                    <Image 
+                      src={isFromApi ? apiUtils.getImageUrl(p.image.url) : p.image} 
+                      alt={isFromApi ? (p.image.alternativeText || p.title) : p.title} 
+                      fill 
+                      className="object-cover" 
+                    />
                   </div>
                   <div className="bg-gray-product text-white p-4">
                     <div className="font-semibold">{p.price.toLocaleString("ru-RU")} руб.</div>

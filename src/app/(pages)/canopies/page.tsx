@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FormBlock from "../../HomeSections/FormBlock";
@@ -13,6 +13,9 @@ import {
   type CanopyShape,
   type CanopyType,
 } from "@/app/contstants/canopiesCatalog";
+import { useProducts } from "@/hooks";
+import { apiUtils } from "@/app/api/lib/api";
+import ProductsLoadingState from "@/components/ProductsLoadingState";
 
 interface FiltersState {
   shapes: Set<CanopyShape>;
@@ -20,18 +23,24 @@ interface FiltersState {
 }
 
 export default function CanopiesCatalogPage() {
+  const canopiesProducts = useProducts('canopies');
   const [filters, setFilters] = useState<FiltersState>({
     shapes: new Set<CanopyShape>(),
     kinds: new Set<CanopyType>(),
   });
 
-  const filtered = useMemo(() => {
-    return PRODUCTS.filter((p) => {
-      const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape);
-      const byKind = filters.kinds.size === 0 || filters.kinds.has(p.kind);
-      return byShape && byKind;
-    });
-  }, [filters]);
+  // Use products from API, fallback to static data if needed
+  const filtered = !canopiesProducts.products || canopiesProducts.products.length === 0
+    ? PRODUCTS.filter((p) => {
+        const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape);
+        const byKind = filters.kinds.size === 0 || filters.kinds.has(p.kind);
+        return byShape && byKind;
+      })
+    : canopiesProducts.products.filter((p) => {
+        const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape as CanopyShape);
+        const byKind = filters.kinds.size === 0 || filters.kinds.has(p.type as CanopyType);
+        return byShape && byKind;
+      });
 
   const toggleShape = (shape: CanopyShape) => {
     setFilters((prev) => {
@@ -138,22 +147,44 @@ export default function CanopiesCatalogPage() {
         </aside>
 
         {/* Products grid */}
-        <div className="col-span-12 md:col-span-9 order-1 md:order-2">
-          <Breadcrumbs items={[{ label: "Навесы" }]} />
-          <h2 className="text-2xl font-bold mb-6">Каталог навесов</h2>
+        <ProductsLoadingState loading={canopiesProducts.loading} error={canopiesProducts.error}>
+          <div className="col-span-12 md:col-span-9 order-1 md:order-2">
+            <Breadcrumbs items={[{ label: "Навесы" }]} />
+            <h2 className="text-2xl font-bold mb-6">Каталог навесов</h2>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список навесов">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список навесов">
             {filtered.map((p) => (
               <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
                 <div className="h-44 relative">
-                  <Image src={p.image} alt={p.title} fill className="object-cover" />
+                  <Image 
+                    src={canopiesProducts.products && canopiesProducts.products.length > 0 
+                      ? apiUtils.getImageUrl((p as any).image.url) 
+                      : (p as any).image
+                    } 
+                    alt={canopiesProducts.products && canopiesProducts.products.length > 0 
+                      ? ((p as any).image.alternativeText || p.title)
+                      : p.title
+                    } 
+                    fill 
+                    className="object-cover" 
+                  />
+                  {/* Show additional images count if available */}
+                  {canopiesProducts.products && canopiesProducts.products.length > 0 && (p as any).additionalImages && (p as any).additionalImages.length > 0 && (
+                    <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                      +{(p as any).additionalImages.length} фото
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-gray-product text-white p-4">
                   <div className="font-semibold">{p.price.toLocaleString("ru-RU")} руб.</div>
                   <div className="text-sm text-gray-200">{p.title}</div>
                   <div className="mt-3 text-xs text-gray-200">
-                    Форма: {SHAPE_LABEL[p.shape]} • Назначение: {TYPE_LABEL[p.kind]}
+                    {canopiesProducts.products && canopiesProducts.products.length > 0 ? (
+                      <>Форма: {SHAPE_LABEL[(p as any).shape as CanopyShape]} • Назначение: {TYPE_LABEL[(p as any).type as CanopyType]}</>
+                    ) : (
+                      <>Форма: {SHAPE_LABEL[(p as any).shape as CanopyShape]} • Назначение: {TYPE_LABEL[(p as any).kind as CanopyType]}</>
+                    )}
                   </div>
                   <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
                   <Link href={`/canopies/${p.id}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
@@ -163,7 +194,8 @@ export default function CanopiesCatalogPage() {
               </article>
             ))}
           </div>
-        </div>
+          </div>
+        </ProductsLoadingState>
       </section>
 
       <FormBlock />

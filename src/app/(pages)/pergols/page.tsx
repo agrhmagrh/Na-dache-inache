@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FormBlock from "../../HomeSections/FormBlock";
@@ -13,6 +13,9 @@ import {
   type PergolaShape,
   type PergolaType,
 } from "@/app/contstants/pergolsCatalog";
+import { useProducts } from "@/hooks";
+import { apiUtils } from "@/app/api/lib/api";
+import ProductsLoadingState from "@/components/ProductsLoadingState";
 
 interface FiltersState {
   shapes: Set<PergolaShape>;
@@ -20,19 +23,24 @@ interface FiltersState {
 }
 
 export default function PergolsCatalogPage() {
+  const pergolsProducts = useProducts('pergols');
   const [filters, setFilters] = useState<FiltersState>({
     shapes: new Set<PergolaShape>(),
     kinds: new Set<PergolaType>(),
   });
 
-  const filtered = useMemo(() => {
-    return PRODUCTS.filter((p) => {
-      const byShape =
-        filters.shapes.size === 0 || filters.shapes.has(p.shape);
-      const byKind = filters.kinds.size === 0 || filters.kinds.has(p.kind);
-      return byShape && byKind;
-    });
-  }, [filters]);
+  // Use products from API, fallback to static data if needed
+  const filtered = !pergolsProducts.products || pergolsProducts.products.length === 0
+    ? PRODUCTS.filter((p) => {
+        const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape);
+        const byKind = filters.kinds.size === 0 || filters.kinds.has(p.kind);
+        return byShape && byKind;
+      })
+    : pergolsProducts.products.filter((p) => {
+        const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape as PergolaShape);
+        const byKind = filters.kinds.size === 0 || filters.kinds.has(p.type as PergolaType);
+        return byShape && byKind;
+      });
 
   const toggleShape = (shape: PergolaShape) => {
     setFilters((prev) => {
@@ -139,27 +147,44 @@ export default function PergolsCatalogPage() {
         </aside>
 
         {/* Products grid */}
-        <div className="col-span-12 md:col-span-9 order-1 md:order-2">
-          <Breadcrumbs items={[{ label: "Перголы" }]} />
-          <h2 className="text-2xl font-bold mb-6">Каталог пергол</h2>
+        <ProductsLoadingState loading={pergolsProducts.loading} error={pergolsProducts.error}>
+          <div className="col-span-12 md:col-span-9 order-1 md:order-2">
+            <Breadcrumbs items={[{ label: "Перголы" }]} />
+            <h2 className="text-2xl font-bold mb-6">Каталог пергол</h2>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список пергол">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список пергол">
             {filtered.map((p) => (
               <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
                 <div className="h-44 relative">
                   <Image
-                    src={p.image}
-                    alt={p.title}
+                    src={pergolsProducts.products && pergolsProducts.products.length > 0 
+                      ? apiUtils.getImageUrl((p as any).image.url) 
+                      : (p as any).image
+                    }
+                    alt={pergolsProducts.products && pergolsProducts.products.length > 0 
+                      ? ((p as any).image.alternativeText || p.title)
+                      : p.title
+                    }
                     fill
                     className="object-cover"
                   />
+                  {/* Show additional images count if available */}
+                  {pergolsProducts.products && pergolsProducts.products.length > 0 && (p as any).additionalImages && (p as any).additionalImages.length > 0 && (
+                    <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                      +{(p as any).additionalImages.length} фото
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-gray-product text-white p-4">
                   <div className="font-semibold">{p.price.toLocaleString("ru-RU")} руб.</div>
                   <div className="text-sm text-gray-200">{p.title}</div>
                   <div className="mt-3 text-xs text-gray-200">
-                    Форма: {SHAPE_LABEL[p.shape]} • Назначение: {TYPE_LABEL[p.kind]}
+                    {pergolsProducts.products && pergolsProducts.products.length > 0 ? (
+                      <>Форма: {SHAPE_LABEL[(p as any).shape as PergolaShape]} • Назначение: {TYPE_LABEL[(p as any).type as PergolaType]}</>
+                    ) : (
+                      <>Форма: {SHAPE_LABEL[(p as any).shape as PergolaShape]} • Назначение: {TYPE_LABEL[(p as any).kind as PergolaType]}</>
+                    )}
                   </div>
                   <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
                   <Link href={`/pergols/${p.id}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
@@ -169,7 +194,8 @@ export default function PergolsCatalogPage() {
               </article>
             ))}
           </div>
-        </div>
+          </div>
+        </ProductsLoadingState>
       </section>
 
       <FormBlock />
