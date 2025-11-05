@@ -5,15 +5,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FormattedStrapiProduct } from '@/types/strapi';
 import { apiUtils } from '@/app/api/lib/api';
-import { StrapiImageUtils, StrapiImageData } from './StrapiImageUtils';
+import { StrapiImageUtils, StrapiImageData } from '../app/components/StrapiImageUtils';
 
-interface StrapiCardProps {
+interface ProductCardProps {
   product: FormattedStrapiProduct;
   categorySlug: string;
-  additionalImages?: StrapiImageData[]; // Images from files API
+  additionalImages?: StrapiImageData[];
 }
 
-export const StrapiCard: React.FC<StrapiCardProps> = ({ 
+export const ProductCard: React.FC<ProductCardProps> = ({ 
   product, 
   categorySlug, 
   additionalImages = [] 
@@ -23,24 +23,6 @@ export const StrapiCard: React.FC<StrapiCardProps> = ({
   const mainImage = productImages[0];
   const imageUrl = mainImage ? StrapiImageUtils.getImageUrl(mainImage, 'medium') : null;
   const formattedPrice = apiUtils.formatPrice(product.price);
-
-  // Extract text from rich text description
-  const getDescriptionText = (description: any[]) => {
-    if (!description || !Array.isArray(description)) return '';
-    
-    return description
-      .map(block => {
-        if (block.type === 'paragraph' && block.children) {
-          return block.children
-            .filter((child: any) => child.type === 'text')
-            .map((child: any) => child.text)
-            .join('');
-        }
-        return '';
-      })
-      .join(' ')
-      .substring(0, 150) + '...';
-  };
 
   return (
     <article className="bg-white shadow rounded overflow-hidden hover:shadow-lg transition-shadow">
@@ -62,13 +44,6 @@ export const StrapiCard: React.FC<StrapiCardProps> = ({
         {additionalImages && additionalImages.length > 0 && (
           <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
             +{additionalImages.length} фото
-          </div>
-        )}
-        
-        {/* Featured badge */}
-        {product.isFeatured && (
-          <div className="absolute top-2 left-2 bg-orange text-white text-xs px-2 py-1 rounded">
-            Популярное
           </div>
         )}
       </div>

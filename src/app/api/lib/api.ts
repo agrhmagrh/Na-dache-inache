@@ -30,7 +30,7 @@ export const productsApi = {
           "image",
           "gallery",
           "category",
-          "material",
+          // "material",
         ],
         filters: params?.filters,
         sort: params?.sort || ["createdAt:desc"],
@@ -70,7 +70,7 @@ export const productsApi = {
           "image",
           "gallery",
           "category",
-          "material",
+          // "material",
         ],
         locale: params?.locale,
       });
@@ -102,7 +102,7 @@ export const productsApi = {
           "image",
           "gallery",
           "category",
-          "material",
+          // "material",
         ],
         filters: {
           ...(params?.filters || {}),
@@ -144,7 +144,7 @@ export const productsApi = {
           "image",
           "gallery",
           "category",
-          "materials",
+          // "materials",
         ],
         filters: {
           ...(params?.filters || {}),

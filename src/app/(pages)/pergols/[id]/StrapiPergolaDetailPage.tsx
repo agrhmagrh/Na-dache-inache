@@ -1,12 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useProductBySlug, useProducts } from '@/hooks/useProducts';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { apiUtils } from '@/app/api/lib/api';
 import { StrapiImageUtils } from '@/app/components/StrapiImageUtils';
+import { StrapiCard } from '@/app/components/StrapiCard';
 import Breadcrumbs from '@/app/components/Breadcrumbs';
 import ProductTabs from '@/app/components/ProductTabs';
 import PavilionGallery from '@/app/components/PavilionGallery';
@@ -16,6 +17,7 @@ import PopularCategories from '@/app/HomeSections/PopularCategories';
 export const StrapiPergolaDetailPage: React.FC = () => {
   const params = useParams();
   const slug = params?.id as string;
+  const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
   
   const { product, loading, error } = useProductBySlug(slug);
   const { products: similarProducts } = useProducts('pergols');
@@ -167,8 +169,76 @@ export const StrapiPergolaDetailPage: React.FC = () => {
                     <li>• Опоры и анкера</li>
                     <li>• Доп. опции: подсветка, шторы, остекление</li>
                   </ul>
-                  <button className="text-black mt-2 hover:underline">
-                    Читать подробнее
+                  
+                  {/* Expandable details section */}
+                  <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    isDetailsExpanded ? 'max-h-96 opacity-100 mt-3' : 'max-h-0 opacity-0'
+                  }`}>
+                    <div className="pt-3 border-t border-gray-200">
+                      <div className="space-y-3 text-sm text-gray-additional">
+                        <div>
+                          <div className="font-semibold text-black mb-1">Подробная комплектация:</div>
+                          <ul className="space-y-1 ml-2">
+                            <li>• Алюминиевый/деревянный каркас</li>
+                            <li>• Поликарбонатное или тканевое покрытие</li>
+                            <li>• Опорные столбы с анкерным креплением</li>
+                            <li>• Система водоотвода</li>
+                            <li>• Крепежные элементы из нержавеющей стали</li>
+                            <li>• Инструкция по сборке с чертежами</li>
+                          </ul>
+                        </div>
+                        
+                        <div>
+                          <div className="font-semibold text-black mb-1">Технические характеристики:</div>
+                          <ul className="space-y-1 ml-2">
+                            <li>• Снеговая нагрузка: до 180 кг/м²</li>
+                            <li>• Ветровая нагрузка: до 30 м/с</li>
+                            <li>• UV-защита покрытия: до 99%</li>
+                            <li>• Антикоррозийное покрытие каркаса</li>
+                            <li>• Гарантия на конструкцию: 5 лет</li>
+                          </ul>
+                        </div>
+                        
+                        <div>
+                          <div className="font-semibold text-black mb-1">Дополнительные опции:</div>
+                          <ul className="space-y-1 ml-2">
+                            <li>• LED-подсветка с диммером</li>
+                            <li>• Выдвижные тканевые шторы</li>
+                            <li>• Боковое остекление</li>
+                            <li>• Встроенные кашпо для растений</li>
+                            <li>• Система туманообразования</li>
+                            <li>• Обогреватели для зимнего использования</li>
+                          </ul>
+                        </div>
+                        
+                        <div>
+                          <div className="font-semibold text-black mb-1">Услуги:</div>
+                          <ul className="space-y-1 ml-2">
+                            <li>• Бесплатный выезд дизайнера</li>
+                            <li>• 3D-визуализация проекта</li>
+                            <li>• Доставка по Москве и области</li>
+                            <li>• Профессиональный монтаж</li>
+                            <li>• Ландшафтное планирование</li>
+                            <li>• Гарантийное обслуживание</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    onClick={() => setIsDetailsExpanded(!isDetailsExpanded)}
+                    className="text-black mt-2 hover:underline focus:outline-none transition-colors duration-200 flex items-center gap-1"
+                  >
+                    {isDetailsExpanded ? 'Скрыть подробности' : 'Читать подробнее'}
+                    <svg 
+                      className={`w-4 h-4 transition-transform duration-200 ${isDetailsExpanded ? 'rotate-180' : ''}`}
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -200,39 +270,14 @@ export const StrapiPergolaDetailPage: React.FC = () => {
             <section className="mt-10">
               <h2 className="text-2xl font-bold mb-4">Похожие перголы</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {similar.map((p) => {
-                  const productImages = StrapiImageUtils.getProductImages(p, p.additionalImages || []);
-                  const imageUrl = productImages[0] ? StrapiImageUtils.getImageUrl(productImages[0], 'medium') : null;
-                  
-                  return (
-                    <article key={p.id} className="bg-white shadow rounded overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="relative h-40">
-                        {imageUrl ? (
-                          <Image 
-                            src={imageUrl} 
-                            alt={p.title} 
-                            fill 
-                            className="object-cover" 
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                            <span className="text-gray-500 text-sm">Нет фото</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="bg-gray-product text-white p-4">
-                        <div className="font-semibold">{apiUtils.formatPrice(p.price)}</div>
-                        <div className="text-sm text-gray-200 mb-3">{p.title}</div>
-                        <Link 
-                          href={`/pergols/${p.slug}`}
-                          className="block w-full bg-orange text-white py-2 text-center font-semibold hover:bg-orange-600 transition-colors"
-                        >
-                          Перейти
-                        </Link>
-                      </div>
-                    </article>
-                  );
-                })}
+                {similar.map((product) => (
+                  <StrapiCard
+                    key={product.id}
+                    product={product}
+                    categorySlug="pergols"
+                    additionalImages={product.additionalImages}
+                  />
+                ))}
               </div>
             </section>
           )}

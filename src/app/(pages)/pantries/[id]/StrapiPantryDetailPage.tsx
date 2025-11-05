@@ -14,13 +14,13 @@ import PavilionGallery from '@/app/components/PavilionGallery';
 import FormBlock from '@/app/HomeSections/FormBlock';
 import PopularCategories from '@/app/HomeSections/PopularCategories';
 
-export const StrapiCanopyDetailPage: React.FC = () => {
+export const StrapiPantryDetailPage: React.FC = () => {
   const params = useParams();
   const slug = params?.id as string;
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
   
   const { product, loading, error } = useProductBySlug(slug);
-  const { products: similarProducts } = useProducts('canopies');
+  const { products: similarProducts } = useProducts('pantries');
 
   if (loading) {
     return (
@@ -39,7 +39,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
         <div className="text-center">
           <p className="text-red-600 mb-4">Ошибка загрузки товара</p>
           <p className="text-gray-600">{error || 'Товар не найден'}</p>
-          <Link href="/canopies" className="mt-4 inline-block bg-orange text-white px-6 py-2 rounded">
+          <Link href="/pantries" className="mt-4 inline-block bg-orange text-white px-6 py-2 rounded">
             Вернуться в каталог
           </Link>
         </div>
@@ -89,7 +89,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
           <div className="bg-white border border-gray-additional rounded p-4 sticky top-4">
             <div className="font-semibold mb-2">Навигация</div>
             <div className="text-sm text-gray-500 mb-3">Используйте фильтры на странице каталога</div>
-            <Link href="/canopies" className="inline-block text-orange hover:underline">
+            <Link href="/pantries" className="inline-block text-orange hover:underline">
               ← Вернуться в каталог
             </Link>
           </div>
@@ -99,7 +99,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
         <div className="col-span-12 md:col-span-9">
           <Breadcrumbs
             items={[
-              { label: "Навесы", href: "/canopies" },
+              { label: "Хозблоки", href: "/pantries" },
               { label: product.title },
             ]}
           />
@@ -133,7 +133,7 @@ export const StrapiCanopyDetailPage: React.FC = () => {
                     <span className="font-semibold text-black">{product.areaM2} м²</span>
                   </div>
                   <div>
-                    <span className="text-gray-additional">Форма навеса:</span>{" "}
+                    <span className="text-gray-additional">Форма:</span>{" "}
                     <span className="font-semibold text-black">{product.shape}</span>
                   </div>
                   <div>
@@ -165,9 +165,10 @@ export const StrapiCanopyDetailPage: React.FC = () => {
                 <div className="mt-5">
                   <div className="font-semibold text-black mb-1">Комплектация:</div>
                   <ul className="space-y-1 text-sm text-gray-additional">
-                    <li>• Навес (полный комплект для сборки)</li>
-                    <li>• Гидроизоляция фундамента</li>
-                    <li>• Винтовые сваи (опционально)</li>
+                    <li>• Хозблок (полный комплект для сборки)</li>
+                    <li>• Кровельный материал</li>
+                    <li>• Крепежные элементы</li>
+                    <li>• Инструкция по сборке</li>
                   </ul>
                   
                   {/* Expandable details section */}
@@ -179,11 +180,13 @@ export const StrapiCanopyDetailPage: React.FC = () => {
                         <div>
                           <div className="font-semibold text-black mb-1">Подробная комплектация:</div>
                           <ul className="space-y-1 ml-2">
-                            <li>• Металлический каркас из профильной трубы</li>
-                            <li>• Кровельное покрытие (поликарбонат/профлист)</li>
-                            <li>• Крепежные элементы и фурнитура</li>
+                            <li>• Каркас из бруса 100x50 мм</li>
+                            <li>• Обшивка вагонкой или имитацией бруса</li>
+                            <li>• Кровельное покрытие (ондулин/профлист)</li>
+                            <li>• Половая доска 32 мм</li>
+                            <li>• Дверь с замком и петлями</li>
+                            <li>• Крепежные элементы</li>
                             <li>• Инструкция по сборке</li>
-                            <li>• Схема фундамента</li>
                           </ul>
                         </div>
                         
@@ -191,21 +194,22 @@ export const StrapiCanopyDetailPage: React.FC = () => {
                           <div className="font-semibold text-black mb-1">Технические характеристики:</div>
                           <ul className="space-y-1 ml-2">
                             <li>• Снеговая нагрузка: до 200 кг/м²</li>
-                            <li>• Ветровая нагрузка: до 32 м/с</li>
-                            <li>• Толщина поликарбоната: 8-10 мм</li>
-                            <li>• Антикоррозийное покрытие каркаса</li>
-                            <li>• Гарантия на конструкцию: 3 года</li>
+                            <li>• Ветровая нагрузка: до 25 м/с</li>
+                            <li>• Влажность древесины: не более 20%</li>
+                            <li>• Антисептическая обработка</li>
+                            <li>• Гарантия на конструкцию: 1 год</li>
                           </ul>
                         </div>
                         
                         <div>
                           <div className="font-semibold text-black mb-1">Дополнительные опции:</div>
                           <ul className="space-y-1 ml-2">
-                            <li>• Водосточная система</li>
-                            <li>• Боковые стенки</li>
-                            <li>• Освещение</li>
-                            <li>• Декоративные элементы</li>
-                            <li>• Автоматические ворота (для навесов-гаражей)</li>
+                            <li>• Окно для естественного освещения</li>
+                            <li>• Полки и стеллажи</li>
+                            <li>• Утепление для зимнего использования</li>
+                            <li>• Электропроводка и освещение</li>
+                            <li>• Дополнительная дверь</li>
+                            <li>• Вентиляционные решетки</li>
                           </ul>
                         </div>
                         
@@ -213,9 +217,10 @@ export const StrapiCanopyDetailPage: React.FC = () => {
                           <div className="font-semibold text-black mb-1">Услуги:</div>
                           <ul className="space-y-1 ml-2">
                             <li>• Бесплатный выезд замерщика</li>
-                            <li>• 3D-визуализация проекта</li>
+                            <li>• Проект хозблока</li>
                             <li>• Доставка по Москве и области</li>
-                            <li>• Профессиональный монтаж</li>
+                            <li>• Профессиональная сборка</li>
+                            <li>• Подготовка основания</li>
                             <li>• Гарантийное обслуживание</li>
                           </ul>
                         </div>
@@ -253,9 +258,9 @@ export const StrapiCanopyDetailPage: React.FC = () => {
               ) : (
                 <div className="prose max-w-none">
                   <p>
-                    Навесы — практичное решение для защиты автомобиля, террасы или крыльца
-                    от осадков и солнца. Мы поможем подобрать оптимальную конструкцию по
-                    размерам, форме и назначению, с учетом особенностей участка.
+                    Хозблок — практичное решение для хранения инструментов, садового инвентаря и других необходимых вещей. 
+                    Мы предлагаем качественные конструкции различных размеров и назначений, 
+                    которые помогут организовать пространство на вашем участке.
                   </p>
                 </div>
               )
@@ -265,13 +270,13 @@ export const StrapiCanopyDetailPage: React.FC = () => {
           {/* Similar Products */}
           {similar.length > 0 && (
             <section className="mt-10">
-              <h2 className="text-2xl font-bold mb-4">Похожие навесы</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <h2 className="text-2xl font-bold mb-4">Похожие хозблоки</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {similar.map((product) => (
                   <StrapiCard
                     key={product.id}
                     product={product}
-                    categorySlug="canopies"
+                    categorySlug="pantries"
                     additionalImages={product.additionalImages}
                   />
                 ))}

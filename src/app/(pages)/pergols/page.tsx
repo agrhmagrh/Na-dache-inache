@@ -90,7 +90,7 @@ export default function PergolsCatalogPage() {
       </section>
 
       {/* Catalog with filters */}
-      <section id="catalog" className="max-w-screen-xl m-auto px-6 py-10 grid grid-cols-12 gap-6" aria-label="Каталог пергол">
+      <section id="catalog" className="max-w-screen-xl m-auto py-10 grid grid-cols-12 gap-6" aria-label="Каталог пергол">
         {/* Sidebar */}
         <aside className="col-span-12 md:col-span-3 order-2 md:order-1">
           <div className="bg-white border border-gray-additional rounded p-4 sticky top-4">

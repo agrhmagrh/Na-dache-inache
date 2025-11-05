@@ -15,7 +15,6 @@ import {
   type PavilionType,
 } from "@/app/contstants/pavilionsCatalog";
 import { useProducts } from "@/hooks";
-import AdditionalImagesDemo from "@/components/AdditionalImagesDemo";
 import { apiUtils } from "@/app/api/lib/api";
 import ProductsLoadingState from "@/components/ProductsLoadingState";
 
@@ -95,7 +94,7 @@ export default function PavilionsCatalogPage() {
       </section>
 
       {/* Catalog with filters */}
-      <section id="catalog" className="max-w-screen-xl m-auto px-6 py-10 grid grid-cols-12 gap-6" aria-label="Каталог беседок">
+      <section id="catalog" className="max-w-screen-xl m-auto py-10 grid grid-cols-12 gap-6" aria-label="Каталог беседок">
         {/* Sidebar */}
         <aside className="col-span-12 md:col-span-3 order-2 md:order-1">
           <div className="bg-white border border-gray-additional rounded p-4 sticky top-4">
@@ -164,7 +163,7 @@ export default function PavilionsCatalogPage() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список беседок">
             {filtered.map((p) => (
-              <article key={p.id} className="bg-white shadow rounded overflow-hidden" role="listitem">
+              <article key={p.id} className="bg-white shadow rounded overflow-hidden hover:shadow-lg transition-shadow" role="listitem">
                 <div className="h-44 relative">
                   <Image
                     src={apiUtils.getImageUrl(p.image.url)}
@@ -181,17 +180,16 @@ export default function PavilionsCatalogPage() {
                 </div>
 
                 <div className="bg-gray-product text-white p-4">
-                  <div className="font-semibold">{p.price.toLocaleString("ru-RU")} руб.</div>
-                  <div className="text-sm text-gray-200">{p.title}</div>
-                  <div className="mt-3 text-xs text-gray-200">
-                    Внешний вид: {SHAPE_LABEL[p.shape as PavilionShape]} • Вид: {TYPE_LABEL[p.type as PavilionType]}
+                  <div className="font-semibold text-lg mb-1">{apiUtils.formatPrice(p.price)}</div>
+                  <div className="text-sm text-gray-200 mb-2">{p.title}</div>
+                  <div className="text-xs text-gray-200 space-y-1">
+                    <div>Внешний вид: {p.size}</div>
+                    <div>Площадь: {p.areaM2} м²</div>
                   </div>
-                  <div className="text-xs text-gray-200">Площадь: {p.areaM2} м²</div>
-                  <Link href={`/pavilions/${p.slug}`} className="mt-4 block w-full bg-orange text-white py-2 text-center hover:opacity-90">
+                  <Link href={`/pavilions/${p.slug}`} className="mt-4 block w-full bg-orange text-white py-2 text-center font-semibold hover:bg-orange-600 transition-colors rounded">
                     Перейти
                   </Link>
                 </div>
-                <AdditionalImagesDemo product={p} />
               </article>
             ))}
           </div>
