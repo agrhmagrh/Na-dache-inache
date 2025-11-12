@@ -17,6 +17,7 @@ import {
 import { useProducts } from "@/hooks";
 import { apiUtils } from "@/app/api/lib/api";
 import ProductsLoadingState from "@/components/ProductsLoadingState";
+import Pagination from "@/components/Pagination";
 
 interface FiltersState {
   shapes: Set<PavilionShape>;
@@ -29,6 +30,8 @@ export default function PavilionsCatalogPage() {
     shapes: new Set<PavilionShape>(),
     kinds: new Set<PavilionType>(),
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   // Debug: Log additional images for testing
   React.useEffect(() => {
@@ -41,14 +44,30 @@ export default function PavilionsCatalogPage() {
     }
   }, [pavilionsProducts.products]);
   // Use only filtered from API, remove double filtered logic in useMemo
-  const filtered = !pavilionsProducts.products || pavilionsProducts.products.length === 0
-    ? []
-    : pavilionsProducts.products.filter((p) => {
-        // p.shape and p.kind may be string in API object, cast to PavilionShape and PavilionType
-        const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape as PavilionShape);
-        const byKind = filters.kinds.size === 0 || filters.kinds.has(p.type as PavilionType);
-        return byShape && byKind;
-      });
+  const filtered = useMemo(() => {
+    if (!pavilionsProducts.products || pavilionsProducts.products.length === 0) {
+      return [];
+    }
+    return pavilionsProducts.products.filter((p) => {
+      // p.shape and p.kind may be string in API object, cast to PavilionShape and PavilionType
+      const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape as PavilionShape);
+      const byKind = filters.kinds.size === 0 || filters.kinds.has(p.type as PavilionType);
+      return byShape && byKind;
+    });
+  }, [pavilionsProducts.products, filters]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filtered.slice(startIndex, endIndex);
+  }, [filtered, currentPage, itemsPerPage]);
+
+  // Reset to page 1 when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
 
   const toggleShape = (shape: PavilionShape) => {
@@ -162,7 +181,7 @@ export default function PavilionsCatalogPage() {
             <h2 className="text-2xl font-bold mb-6">Каталог беседок</h2>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список беседок">
-            {filtered.map((p) => (
+            {paginatedProducts.map((p) => (
               <article key={p.id} className="bg-white shadow rounded overflow-hidden hover:shadow-lg transition-shadow" role="listitem">
                 <div className="h-44 relative">
                   <Image
@@ -193,6 +212,11 @@ export default function PavilionsCatalogPage() {
               </article>
             ))}
           </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
           </div>
         </ProductsLoadingState>
       </section>

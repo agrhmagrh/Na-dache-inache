@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FormattedStrapiProduct } from '@/types/strapi';
@@ -11,33 +11,6 @@ interface PavilionCardProps {
 }
 
 export const PavilionCard: React.FC<PavilionCardProps> = ({ product }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // Extract text from rich text description
-  const getDescriptionText = (description: any[], limit?: number) => {
-    if (!description || !Array.isArray(description)) return '';
-    
-    const fullText = description
-      .map(block => {
-        if (block.type === 'paragraph' && block.children) {
-          return block.children
-            .filter((child: any) => child.type === 'text')
-            .map((child: any) => child.text)
-            .join('');
-        }
-        return '';
-      })
-      .join(' ');
-    
-    if (limit && fullText.length > limit) {
-      return fullText.substring(0, limit) + '...';
-    }
-    
-    return fullText;
-  };
-
-  const shortDescription = getDescriptionText(product.description, 100);
-  const fullDescription = getDescriptionText(product.description);
 
   return (
     <article className="bg-white shadow rounded overflow-hidden hover:shadow-lg transition-shadow" role="listitem">
@@ -71,40 +44,6 @@ export const PavilionCard: React.FC<PavilionCardProps> = ({ product }) => {
           <div>Внешний вид: {product.size}</div>
           <div>Площадь: {product.areaM2} м²</div>
         </div>
-
-        {/* Expandable description section */}
-        {(shortDescription || fullDescription) && (
-          <div className="mt-3">
-            <div className="text-xs text-gray-200 leading-relaxed">
-              {isExpanded ? fullDescription : shortDescription}
-            </div>
-            
-            {fullDescription && fullDescription.length > 100 && (
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsExpanded(!isExpanded);
-                }}
-                className="text-orange text-xs mt-2 hover:underline focus:outline-none"
-              >
-                {isExpanded ? 'Скрыть' : 'Читать далее'}
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Additional details when expanded */}
-        {isExpanded && (
-          <div className="mt-3 pt-3 border-t border-gray-600">
-            <div className="text-xs text-gray-200 space-y-1">
-              <div>Форма: {product.shape}</div>
-              <div>Тип: {product.type}</div>
-              {product.material && (
-                <div>Материал: {product.material.name}</div>
-              )}
-            </div>
-          </div>
-        )}
         
         <Link 
           href={`/pavilions/${product.slug}`} 

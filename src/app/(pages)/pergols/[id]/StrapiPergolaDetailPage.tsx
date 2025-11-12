@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useProductBySlug, useProducts } from '@/hooks/useProducts';
 import { useParams } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { apiUtils } from '@/app/api/lib/api';
 import { StrapiImageUtils } from '@/app/components/StrapiImageUtils';
@@ -13,14 +12,31 @@ import ProductTabs from '@/app/components/ProductTabs';
 import PavilionGallery from '@/app/components/PavilionGallery';
 import FormBlock from '@/app/HomeSections/FormBlock';
 import PopularCategories from '@/app/HomeSections/PopularCategories';
+import OrderModal, { ModalType } from '@/app/components/OrderModal';
 
 export const StrapiPergolaDetailPage: React.FC = () => {
   const params = useParams();
   const slug = params?.id as string;
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>('order');
   
   const { product, loading, error } = useProductBySlug(slug);
   const { products: similarProducts } = useProducts('pergols');
+
+  const handleOrderClick = () => {
+    setModalType('order');
+    setIsModalOpen(true);
+  };
+
+  const handleConsultationClick = () => {
+    setModalType('consultation');
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   if (loading) {
     return (
@@ -154,10 +170,16 @@ export const StrapiPergolaDetailPage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-3">
-                  <button className="bg-orange text-white py-2 font-semibold hover:bg-orange-600 transition-colors">
+                  <button 
+                    onClick={handleOrderClick}
+                    className="bg-orange text-white py-2 font-semibold hover:bg-orange-600 transition-colors"
+                  >
                     Заказать
                   </button>
-                  <button className="bg-gray-dark text-white py-2 font-semibold hover:bg-gray-700 transition-colors">
+                  <button 
+                    onClick={handleConsultationClick}
+                    className="bg-gray-dark text-white py-2 font-semibold hover:bg-gray-700 transition-colors"
+                  >
                     Консультация
                   </button>
                 </div>
@@ -286,6 +308,13 @@ export const StrapiPergolaDetailPage: React.FC = () => {
 
       <FormBlock />
       <PopularCategories />
+
+      <OrderModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        type={modalType}
+        productTitle={product?.title}
+      />
     </main>
   );
 };

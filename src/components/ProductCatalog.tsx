@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useProducts } from '@/hooks/useProducts';
 import { StrapiCard } from '../app/components/StrapiCard';
 import ProductsLoadingState from './ProductsLoadingState';
 import Breadcrumbs from '../app/components/Breadcrumbs';
+import Pagination from './Pagination';
 
 interface FilterOption {
   key: string;
@@ -48,6 +49,8 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
     types: new Set<string>(),
     shapes: new Set<string>(),
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   // Filter products
   const filtered = products.filter((p) => {
@@ -55,6 +58,19 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
     const byShape = filters.shapes.size === 0 || filters.shapes.has(p.shape);
     return byType && byShape;
   });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filtered.slice(startIndex, endIndex);
+  }, [filtered, currentPage]);
+
+  // Reset to page 1 when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
   const toggleType = (type: string) => {
     setFilters((prev) => {
@@ -189,16 +205,23 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label={`Список ${title.toLowerCase()}`}>
-                {filtered.map((product) => (
-                  <StrapiCard
-                    key={product.id}
-                    product={product}
-                    categorySlug={categorySlug}
-                    additionalImages={product.additionalImages}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label={`Список ${title.toLowerCase()}`}>
+                  {paginatedProducts.map((product) => (
+                    <StrapiCard
+                      key={product.id}
+                      product={product}
+                      categorySlug={categorySlug}
+                      additionalImages={product.additionalImages}
+                    />
+                  ))}
+                </div>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </>
             )}
           </div>
         </ProductsLoadingState>

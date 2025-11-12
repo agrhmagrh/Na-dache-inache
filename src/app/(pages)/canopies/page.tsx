@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import FormBlock from "../../HomeSections/FormBlock";
 import PopularCategories from "../../HomeSections/PopularCategories";
@@ -7,6 +7,7 @@ import CanopiesSeo from "../../components/CanopiesSeo";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { StrapiCard } from "../../components/StrapiCard";
 import { useProducts } from "@/hooks";
+import Pagination from "@/components/Pagination";
 
 // Define filter types based on common values
 type CanopyShape = 'rectangular' | 'square' | 'round' | 'arched' | 'lean-to';
@@ -39,6 +40,8 @@ export default function CanopiesCatalogPage() {
     shapes: new Set<CanopyShape>(),
     kinds: new Set<CanopyType>(),
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   // Filter products from API only
   const filtered = products.filter((p) => {
@@ -46,6 +49,19 @@ export default function CanopiesCatalogPage() {
     const byKind = filters.kinds.size === 0 || filters.kinds.has(p.type as CanopyType);
     return byShape && byKind;
   });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filtered.slice(startIndex, endIndex);
+  }, [filtered, currentPage]);
+
+  // Reset to page 1 when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
   const toggleShape = (shape: CanopyShape) => {
     setFilters((prev) => {
@@ -201,16 +217,23 @@ export default function CanopiesCatalogPage() {
               </div>
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список навесов">
-              {filtered.map((product) => (
-                <StrapiCard
-                  key={product.id}
-                  product={product}
-                  categorySlug="canopies"
-                  additionalImages={product.additionalImages}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Список навесов">
+                {paginatedProducts.map((product) => (
+                  <StrapiCard
+                    key={product.id}
+                    product={product}
+                    categorySlug="canopies"
+                    additionalImages={product.additionalImages}
+                  />
+                ))}
+              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </>
           )}
         </div>
       </section>
